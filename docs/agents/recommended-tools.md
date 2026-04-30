@@ -99,14 +99,19 @@ Do **not** install:
 
 ## MCP servers
 
-Pre-wired in `.mcp.json` (no setup beyond install):
+Pre-wired in two config files — both are checked in (no setup beyond install):
+
+| File | Used by |
+|------|---------|
+| `.mcp.json` | Claude Code |
+| `.codex/config.toml` | Codex |
 
 | MCP | What it does |
 |-----|-------------|
 | `context7` | Pulls library docs on demand. Optional override per library in `docs/references/llms.md`. |
 | `playwright` | Browser automation for E2E testing |
 
-Optional — add to `.mcp.json` under `mcpServers` (see SETUP.md for snippets):
+Optional — when adding new MCPs, add to **both** `.mcp.json` and `.codex/config.toml` (see SETUP.md for snippets):
 
 | MCP | URL / command | Auth | Best for |
 |-----|---------------|-----|---------|

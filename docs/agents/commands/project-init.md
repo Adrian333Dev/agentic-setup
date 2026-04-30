@@ -6,22 +6,23 @@ This document is the body of the `/project-init` command. It is **intentionally 
 
 ---
 
-## Prerequisites
+## Step 0 — Gate check (BLOCKING — do this before anything else)
 
-`docs/spec/` must contain documentation that adequately covers two dimensions:
-
-1. **Product bible** — what you're building, who it's for, all features, V1 scope, non-goals, edge cases. Detailed enough to understand the product end-to-end without external context.
-2. **Tech spec + stack** — full library/framework list with versions and rationale, architecture decisions, deployment target, system design, integration points. Assume the user has done high-level technical research before running this — the spec captures the result.
+1. List every file under `docs/spec/` recursively.
+2. Read them all.
+3. Verify that the combined content adequately covers **both** dimensions:
+   - **Product bible** — what you're building, who it's for, all features, V1 scope, non-goals, edge cases. Detailed enough to understand the product end-to-end without external context.
+   - **Tech spec + stack** — full library/framework list with versions and rationale, architecture decisions, deployment target, system design, integration points.
 
 Filenames and structure are free-form. Single files (`product.md`, `tech.md`) or split (`product/overview.md`, `product/v1.md`, `tech/stack.md`, `tech/architecture.md`) — both fine.
 
-If after reading every file in `docs/spec/` either dimension is thin or missing, **stop and tell the user what's missing**. Do not invent the spec. Do not proceed.
+**If either dimension is thin or missing: stop immediately. Tell the user exactly what is missing and what to add. Do not proceed to Step 1 or any further step. Do not invent the spec.**
 
 ---
 
-## Step 1 — Read all spec docs
+## Step 1 — Extract spec content
 
-Read every file under `docs/spec/`, recursively. Extract and note:
+From the files already read in Step 0, extract and note:
 
 - Project name, one-sentence description
 - Full tech stack: every framework, library, service mentioned — with versions where given

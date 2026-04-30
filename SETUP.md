@@ -80,7 +80,14 @@ npm install -g typescript-language-server typescript
 
 ## 4. MCP servers
 
-`.mcp.json` in this template pre-wires `context7` and `playwright`. Both run via `npx` on demand — no install required.
+This template pre-wires `context7` and `playwright` in two config files — both are checked in:
+
+| File | Used by |
+|------|---------|
+| `.mcp.json` | Claude Code |
+| `.codex/config.toml` | Codex |
+
+Both run via `npx` on demand — no install required.
 
 For Playwright, install browser binaries once:
 
@@ -90,7 +97,7 @@ npx playwright install
 
 ### Optional MCPs
 
-Add to `.mcp.json` under the `mcpServers` key. Full list: `docs/agents/recommended-tools.md`.
+Add to `.mcp.json` (Claude Code) **and** `.codex/config.toml` (Codex) when adding new MCPs. Full list: `docs/agents/recommended-tools.md`.
 
 #### Supabase
 
