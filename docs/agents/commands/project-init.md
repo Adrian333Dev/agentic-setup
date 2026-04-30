@@ -75,7 +75,7 @@ The template ships with substantive **base conventions** (universal patterns + a
    - Non-TS language → swap the TS section for the appropriate language section (or remove it)
 3. **Add a stack-specific section** per major opinionated library in the stack. Use your training knowledge first; reach for context7 only when in real doubt about current best practices for one of the most opinionated frameworks (e.g. NestJS, Next.js). Examples:
    - **TanStack Query**: stable cache key factories per resource (`queryKeys.user.byId(id)`), one custom hook per query/mutation, invalidate by key prefix not refetch.
-   - **NestJS**: one module per feature domain in `src/modules/<domain>/`, services hold business logic, controllers stay thin, DTOs validated with `class-validator` at the boundary.
+   - **NestJS**: domains under `src/domains/<domain>/`, Zod for validation (`ZodValidationPipe` + `@ZodBody`/`@ZodParam`/`@ZodQuery`), `httpErrors` factory for exceptions, `ok()` wrapper for responses.
    - **Zustand**: one store per domain, selectors at call site, no derived state in store.
    - **Drizzle / Prisma**: generated types are output — never edit; migrations one-at-a-time, named with intent.
 4. **Ask the user 3–4 quick preference questions** for things you can't infer. One at a time. Do not exceed 4. Examples:
@@ -96,7 +96,15 @@ This file is a **living document**. After init, the agent and the user add new r
 
 ---
 
-## Step 6 — Report
+## Step 6 — Seed docs/agents/setup-notes.md
+
+After scaffolding decisions are made (Turborepo pipeline, package manager config, DB migration approach, bootstrap ordering), record the one-time choices in `docs/agents/setup-notes.md`. This file is reference, not instruction — it's for choices that are already baked into config files and won't be revisited unless the setup is redone.
+
+If no scaffolding has happened yet, leave a placeholder noting it will be populated as the first milestone is built.
+
+---
+
+## Step 7 — Report
 
 Output a short summary:
 

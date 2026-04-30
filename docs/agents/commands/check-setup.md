@@ -12,7 +12,7 @@ This document is the body of the `/check-setup` command. **Read-only by design**
 
 **Claude Code:** type `/check-setup` in the chat.
 
-**Codex / others:** ask the agent to *follow the instructions in `docs/agents/check-setup.md`*.
+**Codex / others:** ask the agent to *follow the instructions in `docs/agents/commands/check-setup.md`*.
 
 The agent runs each check in order, tags it with one of:
 
@@ -68,10 +68,12 @@ Suggest: restore the deny list from the template's `.claude/settings.json`.
 
 1. `.agents/skills/checkpoint/SKILL.md` exists and is readable. (FAIL otherwise.)
 2. `.claude/skills/checkpoint` exists as a symlink and resolves to `.agents/skills/checkpoint`. (FAIL on broken symlink. ⏭️ SKIP if not Claude Code.)
-3. `.claude/commands/project-init.md` exists and references `docs/agents/project-init.md`. (FAIL on missing. ⏭️ SKIP if not Claude Code.)
-4. `.claude/commands/check-setup.md` exists and references `docs/agents/check-setup.md`. (FAIL on missing. ⏭️ SKIP if not Claude Code.)
-5. `docs/agents/project-init.md` exists. (FAIL otherwise.)
-6. `docs/agents/check-setup.md` exists. (FAIL otherwise — that's this file.)
+3. `.claude/commands/project-init.md` exists and references `docs/agents/commands/project-init.md`. (FAIL on missing. ⏭️ SKIP if not Claude Code.)
+4. `.claude/commands/check-setup.md` exists and references `docs/agents/commands/check-setup.md`. (FAIL on missing. ⏭️ SKIP if not Claude Code.)
+5. `.claude/commands/update-conventions.md` exists and references `docs/agents/commands/update-conventions.md`. (WARN on missing. ⏭️ SKIP if not Claude Code.)
+6. `docs/agents/commands/project-init.md` exists. (FAIL otherwise.)
+7. `docs/agents/commands/check-setup.md` exists. (FAIL otherwise — that's this file.)
+8. `docs/agents/commands/update-conventions.md` exists. (WARN otherwise.)
 
 ### E. External skills (best-effort)
 

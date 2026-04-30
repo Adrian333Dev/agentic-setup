@@ -55,6 +55,8 @@ Skills override default agent behavior. When `now.md` points to one, use it.
 ## Hard rules
 
 - **Never run git mutations** — no `git add`, `commit`, `push`, `reset`, `checkout`, `rebase`, `merge`, `stash`, `clean`, or any branch/worktree mutations. Suggest the command for the user to run.
+- **External packages: always use the package manager's add/remove commands.** Never edit `package.json` directly for external dependencies. Omit the version to install latest. Local monorepo packages (`packages/*`) may be added to `package.json` directly.
+- **CLI-first setup.** Never hand-create files an official CLI generates (`package.json`, `tsconfig.json`, framework configs). Use init commands instead.
 - **One formal milestone at a time** — only one milestone has a `spec.md` + `plan.md` at any moment. The next milestone is formalized only after the current one ships. A loose `docs/work/roadmap.md` of upcoming work is fine and expected; it's not a commitment.
 - **Milestone scope** — one feature per milestone. Split into sub-milestones (`m01a-…`, `m01b-…`) if scope grows.
 - **No placeholders in plans** — every task in `plan.md` must contain real file paths, real code, real commands.
@@ -74,5 +76,6 @@ Skills override default agent behavior. When `now.md` points to one, use it.
 | `docs/spec/` | Project bible (product + tech) |
 | `docs/agents/conventions.md` | Coding conventions — base + stack layer; living document |
 | `docs/agents/commands.md` | Dev/test/build/lint commands; living document |
+| `docs/agents/setup-notes.md` | One-time setup decisions, scaffold commands, tooling configuration choices |
 | `docs/agents/recommended-tools.md` | Skills, MCPs, plugins reference |
 | `docs/references/llms.md` | Optional `llms.txt` overrides for specific libraries |

@@ -22,11 +22,13 @@ Works with **Claude Code**, **Codex**, **Cursor**, and any tool that reads instr
 | Roadmap | `docs/work/roadmap.md` | Loose blueprint of upcoming work |
 | Milestone history | `docs/work/milestones/` | Per-milestone specs, plans, checkpoints |
 | Conventions | `docs/agents/conventions.md` | Living doc — base + stack layer |
-| Commands | `docs/agents/commands.md` | Living doc — dev/test/build/lint |
+| Dev/build commands | `docs/agents/commands.md` | Living doc — dev/test/build/lint |
+| Setup decisions | `docs/agents/setup-notes.md` | One-time scaffold choices; reference, not directives |
 | Tool registry | `docs/agents/recommended-tools.md` | All available skills, MCPs, plugins |
 | LLM doc overrides | `docs/references/llms.md` | Optional `llms.txt` overrides for specific libraries |
-| `/project-init` body | `docs/agents/project-init.md` | One-time init instructions (not loaded as a skill) |
-| `/check-setup` body | `docs/agents/check-setup.md` | Tool-agnostic setup health-check (read-only) |
+| `/project-init` body | `docs/agents/commands/project-init.md` | One-time init instructions (not loaded as a skill) |
+| `/check-setup` body | `docs/agents/commands/check-setup.md` | Tool-agnostic setup health-check (read-only) |
+| `/update-conventions` body | `docs/agents/commands/update-conventions.md` | Record new conventions or setup decisions |
 
 ---
 
@@ -35,7 +37,7 @@ Works with **Claude Code**, **Codex**, **Cursor**, and any tool that reads instr
 ### 1. Clone the template
 
 ```bash
-git clone https://github.com/your-username/agentic-setup my-project
+git clone https://github.com/Adrian333Dev/agentic-setup.git my-project
 cd my-project
 ```
 
@@ -51,13 +53,13 @@ Populate `docs/spec/` with a **product bible** (what you're building, A-Z) and a
 
 **Claude Code:** type `/project-init` in the chat.
 
-**Codex / others:** ask the agent to *follow the instructions in `docs/agents/project-init.md`*.
+**Codex / others:** ask the agent to *follow the instructions in `docs/agents/commands/project-init.md`*.
 
 Review what was filled in. Correct any wrong inferences. Start building.
 
 ### 5. Sanity check anytime
 
-Run `/check-setup` (Claude Code) or ask the agent to *follow the instructions in `docs/agents/check-setup.md`* (Codex / others). It's read-only — reports template integrity, init status, skills accessibility, and optional tooling, then prints a sorted action list for any failures or warnings.
+Run `/check-setup` (Claude Code) or ask the agent to *follow the instructions in `docs/agents/commands/check-setup.md`* (Codex / others). It's read-only — reports template integrity, init status, skills accessibility, and optional tooling, then prints a sorted action list for any failures or warnings.
 
 ---
 
@@ -121,7 +123,7 @@ Enforced via `.claude/settings.json` deny list for Claude Code, and via the inst
 - **Add a skill:** create `<name>/SKILL.md` in `.agents/skills/`, then symlink into `.claude/skills/`.
 - **Add an MCP:** add the config to `.mcp.json` under `mcpServers` (see SETUP.md for snippets).
 - **Project-specific rules:** add to the *Project-specific rules* section in `CLAUDE.md` and `AGENTS.md`.
-- **Update conventions / commands:** edit the files directly as you learn — they're living documents.
+- **Update conventions / commands:** run `/update-conventions` (Claude Code) or ask the agent to follow `docs/agents/commands/update-conventions.md`. It accepts explicit rules or analyzes the session to extract patterns, then writes to `conventions.md` or `setup-notes.md` as appropriate.
 - **Adjust the roadmap:** edit `docs/work/roadmap.md` whenever priorities shift.
 
 ---
