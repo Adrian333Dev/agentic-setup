@@ -1,57 +1,15 @@
 # Dev Commands
 
-> Populated by `project-init`. Verify and update after project setup.
+Living document. `/project-init` populates an initial layout from the project's actual command sources (`package.json`, workspace files, `Makefile`, etc.). Add new commands as the project grows.
+
+Mark unverified entries with `# unverified`.
 
 ---
 
-## Dev
-
-```bash
-# start dev server
-```
-
-## Test
-
-```bash
-# run all tests
-
-# run with coverage
-
-# run a single test file
-```
-
-## Build
-
-```bash
-# production build
-```
-
-## Type check
-
-```bash
-# type check only (no emit)
-```
-
-## Lint & format
-
-```bash
-# lint
-
-# format
-```
-
-## Database
-
-```bash
-# run migrations
-
-# generate types from schema
-
-# reset local DB
-```
-
-## Other
-
-```bash
-# add project-specific scripts here
-```
+<!-- Populated by /project-init. The structure follows the project shape:
+     - Single app: blocks per concern (dev / test / build / lint / etc.)
+     - Monorepo: a section per workspace + shared / root
+     - Library: build / publish / changeset
+     - Extension: manifest build / content-script / options-page
+     Keep this file alive — append new commands as the project grows.
+-->

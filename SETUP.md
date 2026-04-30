@@ -6,6 +6,8 @@ One-time per-machine setup. Run these before starting development on any project
 
 ## 1. Superpowers
 
+Provides the design → plan → implement → verify → ship workflow this template depends on.
+
 ### Claude Code
 
 ```bash
@@ -33,7 +35,38 @@ multi_agent = true
 
 ---
 
-## 2. TypeScript Language Server (Claude Code LSP)
+## 2. Matt Pocock's skills (curated subset)
+
+A small set of complementary engineering / productivity skills. Install once, then enable only the curated subset.
+
+```bash
+npx skills@latest add mattpocock/skills
+```
+
+The installer will ask which skills to enable. Pick this subset:
+
+- **`grill-with-docs`** — replaces plain `grill-me` with a stronger version that builds a domain glossary inline (`CONTEXT.md`) and writes ADRs as decisions crystallize.
+- **`caveman`** — ultra-compressed response mode (~75% token reduction with no loss of technical accuracy).
+- **`improve-codebase-architecture`** — surface refactoring opportunities to deepen modules.
+- **`zoom-out`** — get a higher-level perspective on an unfamiliar code area.
+- **`write-a-skill`** — author your own skills with proper structure.
+
+Skip the rest:
+
+- `tdd`, `diagnose` — covered by Superpowers (`test-driven-development`, `systematic-debugging`).
+- `to-prd`, `to-issues`, `triage`, `setup-matt-pocock-skills` — built around GitHub / Linear issue trackers; this template uses milestone folders, not issues.
+- `git-guardrails-claude-code` — `.claude/settings.json` deny list already covers this.
+- `migrate-to-shoehorn`, `scaffold-exercises`, `setup-pre-commit` — niche / stack-specific.
+
+You can always add more later via the same installer.
+
+---
+
+## 3. Optional language tooling
+
+Install only if your project uses these.
+
+### TypeScript Language Server (Claude Code LSP)
 
 ```bash
 npm install -g typescript-language-server typescript
@@ -41,11 +74,9 @@ npm install -g typescript-language-server typescript
 
 ---
 
-## 3. MCP Servers
+## 4. MCP servers
 
-### Context7 & Playwright
-
-No setup needed — both run via `npx` on demand from `.mcp.json`.
+`.mcp.json` in this template pre-wires `context7` and `playwright`. Both run via `npx` on demand — no install required.
 
 For Playwright, install browser binaries once:
 
@@ -55,15 +86,19 @@ npx playwright install
 
 ### Optional MCPs
 
-Add any of these to `.mcp.json` as needed for your project. See `docs/agents/recommended-tools.md` for the full list.
+Add to `.mcp.json` under the `mcpServers` key. Full list: `docs/agents/recommended-tools.md`.
 
 #### Supabase
 
 ```json
-"supabase": {
-  "url": "https://mcp.supabase.com/mcp",
-  "headers": {
-    "Authorization": "Bearer YOUR_SUPABASE_ACCESS_TOKEN"
+{
+  "mcpServers": {
+    "supabase": {
+      "url": "https://mcp.supabase.com/mcp",
+      "headers": {
+        "Authorization": "Bearer YOUR_SUPABASE_ACCESS_TOKEN"
+      }
+    }
   }
 }
 ```
@@ -73,10 +108,14 @@ Get your access token: https://supabase.com/dashboard/account/tokens
 #### Stripe
 
 ```json
-"stripe": {
-  "url": "https://mcp.stripe.com",
-  "headers": {
-    "Authorization": "Bearer YOUR_STRIPE_SECRET_KEY"
+{
+  "mcpServers": {
+    "stripe": {
+      "url": "https://mcp.stripe.com",
+      "headers": {
+        "Authorization": "Bearer YOUR_STRIPE_SECRET_KEY"
+      }
+    }
   }
 }
 ```
@@ -84,9 +123,13 @@ Get your access token: https://supabase.com/dashboard/account/tokens
 #### Shadcn/ui
 
 ```json
-"shadcn": {
-  "command": "npx",
-  "args": ["shadcn@latest", "mcp"]
+{
+  "mcpServers": {
+    "shadcn": {
+      "command": "npx",
+      "args": ["shadcn@latest", "mcp"]
+    }
+  }
 }
 ```
 
@@ -95,17 +138,21 @@ Get your access token: https://supabase.com/dashboard/account/tokens
 Start the Inngest dev server first (`npx inngest-cli@latest dev`), then add:
 
 ```json
-"inngest-dev": {
-  "url": "http://127.0.0.1:8288/mcp"
+{
+  "mcpServers": {
+    "inngest-dev": {
+      "url": "http://127.0.0.1:8288/mcp"
+    }
+  }
 }
 ```
 
 ---
 
-## 4. Initialize the project
+## 5. Initialize the project
 
-After cloning this template and adding your docs to `docs/spec/`, run the init skill:
+After cloning this template and adding documentation to `docs/spec/` (a product bible and tech spec — named and split however suits the project), initialize:
 
 **Claude Code:** `/project-init`
 
-**Codex:** `use the project-init skill`
+**Codex / others:** ask the agent to *follow the instructions in `docs/agents/project-init.md`*.

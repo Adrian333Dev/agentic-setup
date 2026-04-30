@@ -2,20 +2,19 @@
 
 <!-- One-sentence project description -->
 
-> This file is the Codex equivalent of CLAUDE.md. Keep them in sync.
-> Superpowers for Codex is installed globally — see SETUP.md.
+> Designed for **solo developers**. Workflow assumes one author, one branch context, no team coordination layer (no PR templates, code-owners, multi-reviewer gates).
+>
+> This file is the Codex equivalent of `CLAUDE.md`. Keep them in sync.
 
 ---
 
 ## Project context
 
-> Fill in after running the `project-init` skill.
+> Fill in after running `/project-init`.
 
 - **Name:** <!-- project name -->
-- **Type:** <!-- web-app | web-extension | desktop | mobile | library | other -->
-- **Tech stack:** <!-- e.g. TypeScript, React, Vite, NestJS, Supabase, pnpm -->
-- **Monorepo:** <!-- yes (Turborepo / pnpm workspaces) | no -->
-- **Repo structure:** <!-- brief description, e.g. apps/web + apps/api + packages/contracts -->
+- **Stack:** <!-- e.g. TypeScript, React, Vite, NestJS, Supabase, pnpm -->
+- **Structure:** <!-- e.g. single app | monorepo (apps/web + apps/api + packages/contracts) | extension + dashboard | library -->
 
 ## Project-specific rules
 
@@ -30,15 +29,34 @@
 
 ## Session start
 
-1. Read `docs/work/now.md`
-2. If the active milestone folder has `session.md`, read it and stop — don't read source files unless the current task requires them
+1. Read `docs/work/now.md` to find the active milestone and next action.
+2. If the active milestone folder has `session.md`, read it before reading source files.
+3. The next action in `now.md` is usually a **Superpowers** skill — invoke it rather than improvising.
+
+## Workflow — Superpowers as the engine
+
+This template's design → plan → implement → verify → ship loop runs on the Superpowers skill suite. Per milestone:
+
+```
+superpowers:brainstorming                    → spec.md
+[grill-with-docs]                            → stress-test the spec, sharpen domain language
+superpowers:writing-plans                    → plan.md
+superpowers:subagent-driven-development      → implement (or executing-plans for simpler work)
+[checkpoint mid-session]                     → session.md
+superpowers:verification-before-completion   → verify against plan + conventions
+superpowers:requesting-code-review           → pre-merge review
+superpowers:finishing-a-development-branch   → wrap, update now.md, adjust roadmap.md
+```
+
+Skills override default agent behavior. When `now.md` points to one, use it.
 
 ## Hard rules
 
 - **Never run git mutations** — no `git add`, `commit`, `push`, `reset`, `checkout`, `rebase`, `merge`, `stash`, `clean`, or any branch/worktree mutations. Suggest the command for the user to run.
-- **Never pre-define a list of future milestones** — define one at a time. The next milestone is planned only after the current one is complete.
-- **Milestone scope** — one feature per milestone. Split into sub-milestones if scope grows unexpectedly.
-- **No placeholders in plans** — every task in a plan must contain real file paths, real code, real commands.
+- **One formal milestone at a time** — only one milestone has a `spec.md` + `plan.md` at any moment. The next milestone is formalized only after the current one ships. A loose `docs/work/roadmap.md` of upcoming work is fine and expected; it's not a commitment.
+- **Milestone scope** — one feature per milestone. Split into sub-milestones (`m01a-…`, `m01b-…`) if scope grows.
+- **No placeholders in plans** — every task in `plan.md` must contain real file paths, real code, real commands.
+- **Maintain `docs/agents/conventions.md` and `docs/agents/commands.md` as living documents** — when you discover or apply a convention or command not listed there, suggest adding it.
 
 ## Superpowers path overrides
 
@@ -50,8 +68,9 @@
 | Doc | Purpose |
 |-----|---------|
 | `docs/work/now.md` | Active milestone and next action |
-| `docs/spec/` | Project bible — product, tech, data model, decisions |
-| `docs/agents/conventions.md` | Coding conventions for this project |
-| `docs/agents/commands.md` | Dev, test, build, and lint commands |
-| `docs/references/llms.md` | LLM-ready doc URLs for tools used here |
-| `docs/agents/recommended-tools.md` | Skills, MCPs, and optional tools |
+| `docs/work/roadmap.md` | Loose blueprint of upcoming work — not a commitment |
+| `docs/spec/` | Project bible (product + tech) |
+| `docs/agents/conventions.md` | Coding conventions — base + stack layer; living document |
+| `docs/agents/commands.md` | Dev/test/build/lint commands; living document |
+| `docs/agents/recommended-tools.md` | Skills, MCPs, plugins reference |
+| `docs/references/llms.md` | Optional `llms.txt` overrides for specific libraries |

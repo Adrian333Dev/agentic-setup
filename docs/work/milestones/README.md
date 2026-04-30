@@ -1,14 +1,18 @@
 # Milestones
 
-One folder per milestone. **Never pre-define more than one milestone ahead** — the next milestone is planned only after the current one ships.
+One folder per milestone.
+
+The hard rule **"one formal milestone at a time"** applies here: only one milestone has a `spec.md` + `plan.md` at any moment. The next milestone is formalized only after the current one ships.
+
+A loose, forward-looking blueprint of upcoming work belongs in `docs/work/roadmap.md` — that's not a commitment and is allowed to grow indefinitely.
 
 ---
 
 ## Naming
 
-`m<NN>-<feature-slug>/` — e.g. `m01-authentication/`, `m02-dashboard/`
+`m<NN>-<feature-slug>/` — e.g. `m01-authentication/`, `m02-dashboard/`.
 
-If a milestone unexpectedly grows, split it: `m01a-auth-core/`, `m01b-auth-social/`
+If a milestone unexpectedly grows, split it: `m01a-auth-core/`, `m01b-auth-social/`.
 
 ## Folder contents
 
@@ -23,12 +27,13 @@ If a milestone unexpectedly grows, split it: `m01a-auth-core/`, `m01b-auth-socia
 
 ```
 brainstorming → spec.md
-writing-plans → plan.md
-implement (subagent-driven-development or executing-plans)
-checkpoint → session.md (save mid-session)
+[grill-with-docs]            → stress-test
+writing-plans                → plan.md
+implement (subagent-driven-development | executing-plans)
+checkpoint                   → session.md (mid-session, as needed)
 verification-before-completion
 requesting-code-review
-finishing-a-development-branch → update now.md → next milestone
+finishing-a-development-branch → update now.md, adjust roadmap.md → next milestone
 ```
 
 ## Philosophy

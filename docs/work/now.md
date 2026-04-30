@@ -7,7 +7,7 @@
 ## Next action
 
 <!-- Single next thing to do, as specific as possible.
-     e.g. "Run superpowers:brainstorming to design the auth flow" -->
+     Usually a Superpowers skill — e.g. "Run superpowers:brainstorming to design the auth flow" -->
 
 ## Milestone folder
 
@@ -16,3 +16,4 @@
 ---
 
 _Update this file before every phase transition (design → plan → implement → review → done)._
+_Adjust `docs/work/roadmap.md` after a milestone wraps if priorities have shifted._

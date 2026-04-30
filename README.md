@@ -1,8 +1,8 @@
 # agentic-setup
 
-A project template for AI-assisted TypeScript development. Provides a complete, opinionated setup for working with AI coding tools — structured enough to produce consistent results, flexible enough to fit any project.
+A project template for AI-assisted development. Designed for **solo developers** — workflow assumes one author, one branch context, no team coordination layer.
 
-Works with **Claude Code**, **Codex**, and any tool that reads instruction files or supports skills.
+Works with **Claude Code**, **Codex**, **Cursor**, and any tool that reads instruction files or supports skills.
 
 ---
 
@@ -10,126 +10,118 @@ Works with **Claude Code**, **Codex**, and any tool that reads instruction files
 
 | What | Where | Purpose |
 |------|-------|---------|
-| Skills | `.agents/skills/` | Tool-agnostic skill files (Codex + others) |
-| Skills (symlinked) | `.claude/skills/` | Same skills, auto-discovered by Claude Code |
-| Claude settings | `.claude/settings.json` | Git mutation deny list, permissions |
-| MCP servers | `.mcp.json` | Context7 + Playwright pre-wired |
-| Instruction file | `CLAUDE.md` | Claude Code project context |
-| Instruction file | `AGENTS.md` | Codex project context (kept in sync) |
+| Local skills | `.agents/skills/` | Tool-agnostic skill files |
+| Local skills (symlinked) | `.claude/skills/` | Same skills, auto-discovered by Claude Code |
+| Slash commands | `.claude/commands/` | Lazy-loaded one-shot commands (e.g. `/project-init`) |
+| Claude settings | `.claude/settings.json` | Git mutation deny list |
+| MCP servers | `.mcp.json` | Pre-wired `context7` + `playwright` |
+| Instruction files | `CLAUDE.md` / `AGENTS.md` | Project context (kept in sync) |
 | Setup guide | `SETUP.md` | Per-machine tool installation |
-| Project spec | `docs/spec/` | Product brief, tech spec, data model |
-| Milestone tracker | `docs/work/now.md` | Active milestone and next action |
+| Project spec | `docs/spec/` | Product bible + tech spec (free-form structure) |
+| Active milestone | `docs/work/now.md` | Current milestone and next action |
+| Roadmap | `docs/work/roadmap.md` | Loose blueprint of upcoming work |
 | Milestone history | `docs/work/milestones/` | Per-milestone specs, plans, checkpoints |
-| Conventions | `docs/agents/conventions.md` | Project coding conventions |
-| Commands | `docs/agents/commands.md` | Dev, test, build, lint commands |
-| Tool registry | `docs/agents/recommended-tools.md` | All available skills, MCPs, and plugins |
-| LLM docs | `docs/references/llms.md` | `llms.txt` / `llms-full.txt` URLs for used libraries |
+| Conventions | `docs/agents/conventions.md` | Living doc — base + stack layer |
+| Commands | `docs/agents/commands.md` | Living doc — dev/test/build/lint |
+| Tool registry | `docs/agents/recommended-tools.md` | All available skills, MCPs, plugins |
+| LLM doc overrides | `docs/references/llms.md` | Optional `llms.txt` overrides for specific libraries |
+| `/project-init` body | `docs/agents/project-init.md` | One-time init instructions (not loaded as a skill) |
 
 ---
 
 ## Quick start
 
-### 1. Clone or fork this template
+### 1. Clone the template
 
 ```bash
 git clone https://github.com/your-username/agentic-setup my-project
 cd my-project
 ```
 
-### 2. Run per-machine setup
+### 2. Per-machine setup
 
-Follow **SETUP.md** to install:
-- Superpowers (Claude Code plugin or Codex plugin)
-- TypeScript language server
-- Any optional MCP servers your project needs
+Follow **SETUP.md** to install Superpowers, the Matt Pocock skills subset, and any optional MCPs / language tooling your stack needs.
 
 ### 3. Add your project documentation
 
-Populate `docs/spec/` with your project documentation:
-- `product.md` — what you're building, features, V1 scope
-- `tech.md` — tech stack decisions, architecture
-- `data-model.md` — schema, relationships (if applicable)
-
-See `docs/spec/README.md` for the full guide.
+Populate `docs/spec/` with a **product bible** (what you're building, A-Z) and a **detailed tech spec** (stack, architecture, decisions). Filenames and structure are free-form — see `docs/spec/README.md` for examples.
 
 ### 4. Initialize
 
-Run the `project-init` skill to auto-fill `CLAUDE.md`, `AGENTS.md`, conventions, and commands from your spec:
+**Claude Code:** type `/project-init` in the chat.
 
-**Claude Code:** type `/project-init` in the chat
+**Codex / others:** ask the agent to *follow the instructions in `docs/agents/project-init.md`*.
 
-**Codex:** ask `use the project-init skill`
-
-Review what was filled in, correct any wrong inferences, then start building.
+Review what was filled in. Correct any wrong inferences. Start building.
 
 ---
 
 ## Development flow
 
-This template uses a **one-milestone-at-a-time** approach driven by superpowers skills. The flow per feature:
+One feature per milestone, driven by Superpowers:
 
 ```
-superpowers:brainstorming     → design the feature, write spec.md
-grill-me                      → stress-test the design (optional but recommended)
-superpowers:writing-plans     → write detailed implementation plan.md
-superpowers:subagent-driven-development  or  superpowers:executing-plans
+superpowers:brainstorming     → spec.md
+[grill-with-docs]             → stress-test (optional but recommended)
+superpowers:writing-plans     → plan.md
+superpowers:subagent-driven-development | executing-plans
 superpowers:verification-before-completion
 superpowers:requesting-code-review
 superpowers:finishing-a-development-branch
-→ update docs/work/now.md → start next milestone
+→ update docs/work/now.md, adjust docs/work/roadmap.md → next milestone
 ```
 
-Save session state at any point with the `checkpoint` skill.
+Save session state any time with the `checkpoint` skill.
 
-See `docs/work/milestones/README.md` for the milestone philosophy.
+`docs/work/roadmap.md` is a loose forward-looking blueprint — formal milestones are still defined one at a time.
 
 ---
 
-## Skills
+## Skills overview
 
-Skills live in `.agents/skills/` (canonical) and are symlinked into `.claude/skills/` for Claude Code. Codex discovers them from `.agents/skills/` directly (if it supports project-level discovery) or globally via the plugin.
+| Source | Examples | How |
+|--------|----------|-----|
+| **This template** | `checkpoint` | Already in `.agents/skills/` |
+| **Superpowers** | core workflow chain (brainstorming, writing-plans, subagent-driven-development, …) | See SETUP.md |
+| **Matt Pocock — curated subset** | `grill-with-docs`, `caveman`, `improve-codebase-architecture`, `zoom-out`, `write-a-skill` | See SETUP.md |
+| **Claude Code plugins** | `supabase`, `sentry`, `playwright`, etc. | `claude plugin install …` per project need |
 
-| Skill | When to use |
-|-------|------------|
-| `project-init` | Once, after adding docs to `docs/spec/` |
-| `grill-me` | To stress-test a plan or design |
-| `checkpoint` | To save session state mid-implementation |
-| `frontend-design` | When building UI components or pages |
-
-Superpowers skills are installed separately (see SETUP.md) and provide the core development workflow.
+Full reference: `docs/agents/recommended-tools.md`.
 
 ---
 
 ## AI tool compatibility
 
-| Tool | How it's supported |
-|------|--------------------|
-| **Claude Code** | `CLAUDE.md` + `.claude/settings.json` + `.claude/skills/` (symlinked) + `.mcp.json` |
+| Tool | How |
+|------|-----|
+| **Claude Code** | `CLAUDE.md` + `.claude/settings.json` + `.claude/skills/` (symlinked) + `.claude/commands/` + `.mcp.json` |
 | **Codex** | `AGENTS.md` + `.agents/skills/` + `.mcp.json` + Superpowers plugin |
-| **Cursor** | `CLAUDE.md` or `AGENTS.md` (Cursor reads both) + `.mcp.json` |
-| **Others** | Point your tool at `CLAUDE.md` or `AGENTS.md` as the instruction file |
+| **Cursor** | `CLAUDE.md` or `AGENTS.md` + `.mcp.json` |
+| **Others** | Point your tool at `CLAUDE.md` or `AGENTS.md` |
 
 ---
 
 ## Git rules
 
-AI tools using this template are configured to **never run git mutations**. No `git add`, `commit`, `push`, `reset`, `checkout`, or any destructive git command. The AI suggests commands — you run them.
+Agents using this template **never run git mutations**. No `git add`, `commit`, `push`, `reset`, `checkout`, or any destructive git command. The agent suggests commands — you run them.
 
-This is enforced via `.claude/settings.json` for Claude Code. For other tools, it's enforced via the instruction files.
+Enforced via `.claude/settings.json` deny list for Claude Code, and via the instruction files for other tools.
 
 ---
 
 ## Customization
 
-- **Add a skill:** create `<name>/SKILL.md` in `.agents/skills/`, then symlink into `.claude/skills/`
-- **Add an MCP:** add the config to `.mcp.json` (see SETUP.md for snippets)
-- **Project-specific rules:** add to the "Project-specific rules" section in `CLAUDE.md` and `AGENTS.md`
-- **Update conventions:** edit `docs/agents/conventions.md` directly or re-run `project-init`
+- **Add a skill:** create `<name>/SKILL.md` in `.agents/skills/`, then symlink into `.claude/skills/`.
+- **Add an MCP:** add the config to `.mcp.json` under `mcpServers` (see SETUP.md for snippets).
+- **Project-specific rules:** add to the *Project-specific rules* section in `CLAUDE.md` and `AGENTS.md`.
+- **Update conventions / commands:** edit the files directly as you learn — they're living documents.
+- **Adjust the roadmap:** edit `docs/work/roadmap.md` whenever priorities shift.
 
 ---
 
 ## Resources
 
 - [Superpowers](https://github.com/obra/superpowers) — core workflow skills
+- [Matt Pocock's skills](https://github.com/mattpocock/skills) — engineering & productivity skills
 - [Claude Code docs](https://code.claude.com/docs) — skills, MCP, settings
 - `docs/agents/recommended-tools.md` — full tool ecosystem reference
