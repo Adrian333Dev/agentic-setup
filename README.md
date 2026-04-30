@@ -62,7 +62,7 @@ One feature per milestone, driven by Superpowers:
 
 ```
 superpowers:brainstorming     → spec.md
-[grill-with-docs]             → stress-test (optional but recommended)
+[grill-me]                    → stress-test (optional but recommended)
 superpowers:writing-plans     → plan.md
 superpowers:subagent-driven-development | executing-plans
 superpowers:verification-before-completion
@@ -75,6 +75,8 @@ Save session state any time with the `checkpoint` skill.
 
 `docs/work/roadmap.md` is a loose forward-looking blueprint — formal milestones are still defined one at a time.
 
+Once the project has accumulated domain terminology, `grill-with-docs` can replace `grill-me` for stress-testing — it writes a glossary to repo-root `CONTEXT.md` and ADRs to `docs/adr/`. Opt-in only.
+
 ---
 
 ## Skills overview
@@ -83,7 +85,7 @@ Save session state any time with the `checkpoint` skill.
 |--------|----------|-----|
 | **This template** | `checkpoint` | Already in `.agents/skills/` |
 | **Superpowers** | core workflow chain (brainstorming, writing-plans, subagent-driven-development, …) | See SETUP.md |
-| **Matt Pocock — curated subset** | `grill-with-docs`, `caveman`, `improve-codebase-architecture`, `zoom-out`, `write-a-skill` | See SETUP.md |
+| **Matt Pocock — curated subset** | `grill-me`, `caveman`, `improve-codebase-architecture`, `zoom-out`, `write-a-skill` (`grill-with-docs` optional) | See SETUP.md |
 | **Claude Code plugins** | `supabase`, `sentry`, `playwright`, etc. | `claude plugin install …` per project need |
 
 Full reference: `docs/agents/recommended-tools.md`.

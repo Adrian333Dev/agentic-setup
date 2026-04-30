@@ -47,7 +47,8 @@ Curated subset that complements Superpowers:
 
 | Skill | When |
 |-------|------|
-| `grill-with-docs` | Stress-test a plan against the project's domain language; updates `CONTEXT.md` and ADRs inline. Use instead of plain `grill-me`. |
+| `grill-me` | Default stress-test for any plan/design. Zero side effects — pure Socratic interview. Use during the milestone flow and ad hoc outside it. |
+| `grill-with-docs` | Opt-in alternative once the project has accumulated domain terminology. Same interview style, but writes a glossary to repo-root `CONTEXT.md` and ADRs to `docs/adr/`. Not milestone-scoped — invoke deliberately. |
 | `caveman` | Ultra-compressed response mode (~75% token reduction). |
 | `improve-codebase-architecture` | Surface deepening opportunities; run periodically. |
 | `zoom-out` | Get a higher-level perspective on an unfamiliar code area. |

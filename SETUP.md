@@ -45,11 +45,15 @@ npx skills@latest add mattpocock/skills
 
 The installer will ask which skills to enable. Pick this subset:
 
-- **`grill-with-docs`** — replaces plain `grill-me` with a stronger version that builds a domain glossary inline (`CONTEXT.md`) and writes ADRs as decisions crystallize.
+- **`grill-me`** — default stress-test skill. Pure Socratic interview, zero side effects. Used in the milestone workflow and ad hoc outside it.
 - **`caveman`** — ultra-compressed response mode (~75% token reduction with no loss of technical accuracy).
 - **`improve-codebase-architecture`** — surface refactoring opportunities to deepen modules.
 - **`zoom-out`** — get a higher-level perspective on an unfamiliar code area.
 - **`write-a-skill`** — author your own skills with proper structure.
+
+Optional add-on once your project has real domain terminology:
+
+- **`grill-with-docs`** — same interview style as `grill-me` but writes a domain glossary to repo-root `CONTEXT.md` and ADRs to `docs/adr/`. Not milestone-scoped. Skip on early milestones; consider it later.
 
 Skip the rest:
 

@@ -27,7 +27,7 @@ If a milestone unexpectedly grows, split it: `m01a-auth-core/`, `m01b-auth-socia
 
 ```
 brainstorming → spec.md
-[grill-with-docs]            → stress-test
+[grill-me]                   → stress-test
 writing-plans                → plan.md
 implement (subagent-driven-development | executing-plans)
 checkpoint                   → session.md (mid-session, as needed)
@@ -35,6 +35,8 @@ verification-before-completion
 requesting-code-review
 finishing-a-development-branch → update now.md, adjust roadmap.md → next milestone
 ```
+
+`grill-with-docs` is an opt-in alternative to `grill-me`, useful once the project has accumulated domain terminology. It writes to repo-root `CONTEXT.md` and `docs/adr/` — not the milestone folder — so don't reach for it on early milestones.
 
 ## Philosophy
 

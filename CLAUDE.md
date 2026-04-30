@@ -37,7 +37,7 @@ This template's design → plan → implement → verify → ship loop runs on t
 
 ```
 superpowers:brainstorming                    → spec.md
-[grill-with-docs]                            → stress-test the spec, sharpen domain language
+[grill-me]                                   → stress-test the spec
 superpowers:writing-plans                    → plan.md
 superpowers:subagent-driven-development      → implement (or executing-plans for simpler work)
 [checkpoint mid-session]                     → session.md
@@ -47,6 +47,8 @@ superpowers:finishing-a-development-branch   → wrap, update now.md, adjust roa
 ```
 
 Skills override default agent behavior. When `now.md` points to one, use it.
+
+`grill-with-docs` is an opt-in alternative to `grill-me`, useful once the project has accumulated domain terminology. It writes to repo-root `CONTEXT.md` and `docs/adr/` (not the milestone folder) — invoke it deliberately, not by default.
 
 ## Hard rules
 
