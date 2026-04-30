@@ -160,3 +160,17 @@ After cloning this template and adding documentation to `docs/spec/` (a product 
 **Claude Code:** `/project-init`
 
 **Codex / others:** ask the agent to *follow the instructions in `docs/agents/project-init.md`*.
+
+---
+
+## 6. Verify the setup (anytime)
+
+If something feels off — after pulling template updates, on a fresh machine, or just as a smoke test — run the check. It's read-only.
+
+**Claude Code:** `/check-setup`
+
+**Codex / others:** ask the agent to *follow the instructions in `docs/agents/check-setup.md`*.
+
+It reports template integrity, initialization status, skills accessibility, and optional tooling — then prints a sorted action list for any failures or warnings.
+
+> Named `check-setup` rather than `doctor` to avoid colliding with Claude Code's built-in `/doctor` command, which checks Claude Code itself.

@@ -12,7 +12,20 @@ Bundled in the template:
 |-------|---------|-------------|
 | `checkpoint` | "save context" / "/checkpoint" | Saves a resumable session snapshot to the active milestone folder |
 
-`/project-init` is intentionally **not** registered as a standard skill — skills load into agent context every session, but project-init runs once per project. Its body lives at `docs/agents/project-init.md`, exposed via `.claude/commands/project-init.md` for Claude Code and as a natural-language fallback for other tools.
+## Local slash commands (`.claude/commands/`)
+
+Lazy-loaded on invocation — they don't bloat session context like skills do.
+
+| Command | Body | What it does |
+|---------|------|-------------|
+| `/project-init` | `docs/agents/project-init.md` | One-shot project initialization from `docs/spec/`. Run once per project. |
+| `/check-setup` | `docs/agents/check-setup.md` | Read-only health check: template integrity, init status, skills accessibility, optional tooling. Run anytime. |
+
+Both have natural-language fallbacks for non-Claude-Code tools — ask the agent to *follow the instructions in `<body-path>`*.
+
+`/project-init` and `/check-setup` are intentionally **not** registered as standard skills — skills load into agent context every session, but these run on demand. Slash commands lazy-load only when invoked.
+
+`/check-setup` is named to avoid collision with Claude Code's built-in `/doctor` command (which checks Claude Code's own installation, not your project setup).
 
 ---
 

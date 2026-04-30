@@ -26,6 +26,7 @@ Works with **Claude Code**, **Codex**, **Cursor**, and any tool that reads instr
 | Tool registry | `docs/agents/recommended-tools.md` | All available skills, MCPs, plugins |
 | LLM doc overrides | `docs/references/llms.md` | Optional `llms.txt` overrides for specific libraries |
 | `/project-init` body | `docs/agents/project-init.md` | One-time init instructions (not loaded as a skill) |
+| `/check-setup` body | `docs/agents/check-setup.md` | Tool-agnostic setup health-check (read-only) |
 
 ---
 
@@ -53,6 +54,10 @@ Populate `docs/spec/` with a **product bible** (what you're building, A-Z) and a
 **Codex / others:** ask the agent to *follow the instructions in `docs/agents/project-init.md`*.
 
 Review what was filled in. Correct any wrong inferences. Start building.
+
+### 5. Sanity check anytime
+
+Run `/check-setup` (Claude Code) or ask the agent to *follow the instructions in `docs/agents/check-setup.md`* (Codex / others). It's read-only — reports template integrity, init status, skills accessibility, and optional tooling, then prints a sorted action list for any failures or warnings.
 
 ---
 
