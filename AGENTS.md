@@ -30,8 +30,9 @@
 ## Session start
 
 1. Read `docs/work/now.md` to find the active milestone and next action.
-2. If the active milestone folder has `session.md`, read it before reading source files.
-3. The next action in `now.md` is usually a **Superpowers** skill — invoke it rather than improvising.
+2. Read `docs/agents/workflow-rules.md`.
+3. If the active milestone folder has `session.md`, read it before reading source files.
+4. The next action in `now.md` is usually a **Superpowers** skill — invoke it rather than improvising.
 
 ## Workflow — Superpowers as the engine
 
@@ -54,13 +55,11 @@ Skills override default agent behavior. When `now.md` points to one, use it.
 
 ## Hard rules
 
-- **Never run git mutations** — no `git add`, `commit`, `push`, `reset`, `checkout`, `rebase`, `merge`, `stash`, `clean`, or any branch/worktree mutations. Suggest the command for the user to run.
-- **External packages: always use the package manager's add/remove commands.** Never edit `package.json` directly for external dependencies. Omit the version to install latest. Local monorepo packages (`packages/*`) may be added to `package.json` directly.
-- **CLI-first setup.** Never hand-create files an official CLI generates (`package.json`, `tsconfig.json`, framework configs). Use init commands instead.
-- **One formal milestone at a time** — only one milestone has a `spec.md` + `plan.md` at any moment. The next milestone is formalized only after the current one ships. A loose `docs/work/roadmap.md` of upcoming work is fine and expected; it's not a commitment.
-- **Milestone scope** — one feature per milestone. Split into sub-milestones (`m01a-…`, `m01b-…`) if scope grows.
-- **No placeholders in plans** — every task in `plan.md` must contain real file paths, real code, real commands.
-- **Maintain `docs/agents/conventions.md` and `docs/agents/commands.md` as living documents** — when you discover or apply a convention or command not listed there, suggest adding it.
+All process rules live in `docs/agents/workflow-rules.md` — read it at session start. Key non-negotiables also enforced here:
+
+- **Never run git mutations.** Suggest commands; the user runs them. (Also enforced via `.claude/settings.json`.)
+- **One formal milestone at a time.** Only one `spec.md` + `plan.md` exists at any moment.
+- **No placeholders in plans.** Real file paths, real code, real commands — always.
 
 ## Superpowers path overrides
 
@@ -75,6 +74,7 @@ Skills override default agent behavior. When `now.md` points to one, use it.
 | `docs/work/roadmap.md` | Loose blueprint of upcoming work — not a commitment |
 | `docs/spec/` | Project bible (product + tech) |
 | `docs/agents/conventions.md` | Coding conventions — base + stack layer; living document |
+| `docs/agents/workflow-rules.md` | Milestone process rules — agent behavior during workflow; living document |
 | `docs/agents/commands.md` | Dev/test/build/lint commands; living document |
 | `docs/agents/setup-notes.md` | One-time setup decisions, scaffold commands, tooling configuration choices |
 | `docs/agents/recommended-tools.md` | Skills, MCPs, plugins reference |

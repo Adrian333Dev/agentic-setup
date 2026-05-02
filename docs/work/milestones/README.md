@@ -21,6 +21,7 @@ If a milestone unexpectedly grows, split it: `m01a-auth-core/`, `m01b-auth-socia
 | `spec.md` | `superpowers:brainstorming` | Feature design and requirements |
 | `plan.md` | `superpowers:writing-plans` | Step-by-step implementation plan |
 | `session.md` | `checkpoint` skill | Latest session snapshot for resuming |
+| `issues.md` | Agent + user, during milestone | Process problems, surprises, inefficiencies — reviewed at wrap, promoted to `workflow-rules.md` or `conventions.md` |
 | `progress.md` | Optional, manual | Deferred items, notes, decisions |
 
 ## Flow

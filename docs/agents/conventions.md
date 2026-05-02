@@ -47,6 +47,7 @@ Every rule must be **concrete and followable**. Vague guidelines like *"follow b
 - Never throw raw strings — throw `Error` instances or domain error classes.
 - Never swallow errors silently. Log, rethrow, or convert to a typed result.
 - Use `unknown` in catch blocks and narrow before use.
+- Never suppress deprecations or warnings with `ignoreDeprecations`, `// @ts-ignore`, `eslint-disable`, or similar directives as a first response. If you reach for a suppression directive, investigate the root cause instead. Suppression is only acceptable as a temporary, explicitly documented workaround (with a comment explaining why and what the real fix would be).
 
 ### Comments
 
