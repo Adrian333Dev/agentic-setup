@@ -100,6 +100,14 @@ After writing, add a brief inline note and keep working: `[checkpoint written to
 
 ---
 
+## During an active brainstorm
+
+`brainstorm.md` owns the working capture. Don't duplicate in-scope decisions to `docs/decisions.md` — that happens after the brainstorm closes. Only capture things that fall **outside** the current brainstorm scope: future ideas → `docs/backlog.md`, unrelated global decisions, anything that won't end up in the spec.
+
+After the brainstorm closes, the session checkpoint and any globally relevant decisions can be written normally.
+
+---
+
 ## Hard rules
 
 - **Write immediately** — not at session end. Compaction, abrupt endings, and context limits all eat deferred saves. Brief inline note (`[saved to docs/decisions.md]`), then continue.

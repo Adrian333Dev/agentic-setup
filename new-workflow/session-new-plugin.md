@@ -1,6 +1,6 @@
 # Session — New Agentic Workflow Plugin
 
-_Last updated: 2026-07-01 (session 3). Status: **visualization skill merge is DONE** — see "Visualization — merge complete" below. Next up: context-capture skill (work order item 2). See "Pivot execution (2026-07-01)" AND "Skill-by-skill audit + architecture decisions (2026-07-01, session 2)" below — these supersede "Open questions" and "On resume" for now._
+_Last updated: 2026-07-07 (session 5, mid-session compaction). Status: items 1–3 and 5 DONE; item 4 (write-spec) has a premature draft file that needs proper brainstorm + rewrite; Superpowers fork cleanup largely done. See "On resume" for exact next action._
 
 **Scope note:** this file tracks work under `new-workflow/` only. Do NOT edit `framework-build/` files without explicit instruction. **Relationship clarified 2026-07-01 (session 2):** `new-workflow/` is effectively framework-build v2 — same goal (replace the rigid Superpowers workflow), different method (curate/adapt existing Claude/Codex-compatible skill ecosystems instead of building a from-scratch guide system). `framework-build/` may be fully rewritten or abandoned — not certain. Its locked decisions (`framework-build/docs/design-session.md`, 85 decisions) are now treated as a **reference/source of validated thinking** to pull into new-workflow — read freely, cite freely, port decisions over. Just don't *write* to framework-build/ files without being told to.
 
@@ -77,7 +77,7 @@ All 5 now cloned under `new-workflow/` (superseded `temp/repos/` paths below):
 | `systematic-debugging` | Modify — add proof-required rule | No mutation — only read-only `git diff`/recent-commits mention |
 | `verification-before-completion` | Likely keep — assess | No mutation — descriptive text only |
 | `requesting-code-review` | Likely keep — assess | No mutation — read-only `git rev-parse`/`git log` for SHA lookups |
-| `finishing-a-development-branch` | **Delete or strip most** — actively runs `git merge`, `git push`, `git branch -d`, `git worktree remove`. Final call (delete vs. heavy strip to suggest-only) still open — next decision. | Real offender |
+| `finishing-a-development-branch` | **Deleted (session 5).** Entirely git/worktree operations; only non-git piece (run tests before finishing) is covered by `verification-before-completion`. | Real offender — deleted |
 | `subagent-driven-development` | **Delete entirely.** (User: "really annoying.") | Whole skill being removed |
 | `test-driven-development` | Remove (D3: no TDD) | No mutation — descriptive only |
 | `using-git-worktrees` | **Delete entirely.** Confirmed: don't need anything about git for this. | Whole skill being removed — its native-tool-fallback path ran real `git worktree add`/`git branch` mutations |
@@ -265,10 +265,10 @@ All 7 items on the original battle-test task list are now done: flowchart, ERD, 
 
 Build sub-skills first, in roughly this order, then come back to finalize `brainstorming` (since it depends on all of them):
 1. ~~**Visualization merge**~~ — **DONE (session 3)**, see "Visualization — merge complete" above.
-2. **Context-capture skill** — not started. Base on framework-build D30/D31. **Next up.**
-3. **Assumption-check skill/rule** — not started. Needs its own dedicated brainstorm session first (hard problem, don't improvise).
-4. **`write-spec` skill** — not started. Mirrors framework-build's design (reads brainstorm.md + conversation → spec.md, no interview).
-5. **`brainstorming` skill** — finalize last, once 1-4 above exist. Architecture already locked (see inventory table), content not drafted.
+2. ~~**Context-capture skill**~~ — **DONE (session 4)**. Skill at `new-workflow/new-skills/context-capture/SKILL.md`. Key decisions: passive + user-invocable; open-ended triggers (agent judgment, not a fixed checklist); defaults table (decisions/notes/backlog/preferences/session.md); adaptive checkpoint format; hard rule that project info goes in repo not auto memory; lazy file creation; defers to existing project structure.
+3. ~~**Assumption-check rule**~~ — **DONE (session 5)**. Saved to `new-workflow/hard-rules.md` (staging area for always-active rules that will go into the new-workflow's eventual CLAUDE.md). Rule: separate observations from inferred causes; every causal claim must be labeled as a hypothesis with a verification step ("Hypothesis: X. To verify: Y.").
+4. **`write-spec` skill** — **DRAFT EXISTS, needs proper brainstorm + rewrite.** A draft was written prematurely at `new-workflow/new-skills/write-spec/SKILL.md` before the brainstorm was completed. Brainstorm was in progress (first question posed: does write-spec require brainstorm.md to exist, or can it work from conversation context alone?) when compaction hit. Resume the brainstorm from scratch — discard the draft, design properly, then rewrite. Key inputs already gathered: Superpowers brainstorming/SKILL.md spec section (self-review checklist, user review gate) and spec-document-reviewer-prompt.md (Completeness/Consistency/Clarity/Scope/YAGNI). **Next up.**
+5. ~~**`brainstorming` skill**~~ — **DONE (session 5)**. Fully rewritten at `new-workflow/new-skills/brainstorming/SKILL.md`. Claude Code only (no web references), full decision capture per branch (not one-liners), grilling principles folded into Phase 2 (relentless, codebase-first, dependency-ordered walk, probe vague responses), Phase 4 hands off to write-spec. Hard rule added: never print tree + walk first branch in same message.
 6. Resume the original mechanical git-mutation-strip walk for the remaining superpowers skills (writing-plans, executing-plans, finishing-a-development-branch, subagent-driven-development, using-git-worktrees, test-driven-development, systematic-debugging, verification-before-completion, requesting-code-review, writing-skills) — paused mid-walk, can resume any time, doesn't block the architecture work above.
 7. `new-workflow/superpowers/CHANGELOG.md` — start this and backfill as each decision above gets actually executed (not just agreed).
 8. Rewrite root `CLAUDE.md` per "Root CLAUDE.md direction" (still valid, unchanged from session 1).
@@ -278,9 +278,11 @@ Build sub-skills first, in roughly this order, then come back to finalize `brain
 
 **Read this whole file. Two live sections, in this order:**
 
-1. **"Skill-by-skill audit + architecture decisions (2026-07-01, session 2)"** — the live state. Visualization merge (work order item 1) is done — see "Visualization — merge complete" above. Immediate next action is work order **item 2: context-capture skill** — design and build it based on framework-build's D30/D31 (three-layer capture + immediate-capture rule), as its own standalone cross-cutting skill in `new-workflow/`, not folded into brainstorming.
+1. **"Skill-by-skill audit + architecture decisions (2026-07-01, session 2)"** — the live state. Items 1, 2, 3, and 5 are done. Item 4 (write-spec) has a premature draft at `new-workflow/new-skills/write-spec/SKILL.md` — **delete it first**, then run the brainstorm properly. Superpowers reference material already read: `brainstorming/SKILL.md` spec section + `spec-document-reviewer-prompt.md`. First brainstorm question: does write-spec require `brainstorm.md` to exist, or can it synthesize from conversation context alone?
 2. **"Pivot execution (2026-07-01)"** (session 1) — background/research findings, still valid, no need to re-derive. Its old "Next actions list" is partially superseded — see the strikethrough note above it.
+
+**Critical behavior note (session 5 feedback):** Never print the branch tree AND walk the first branch in the same message. Phase 1 = print tree (one message, stop). Phase 2 = one branch question + recommendation per message, wait for response. Mixing both is confusing and annoying to the user — this is now a hard rule in `brainstorming/SKILL.md`.
 
 Mode reminder: plain conversational brainstorming only for this meta-work — do not invoke `superpowers:brainstorming` or any other `superpowers:*` skill machinery on this effort itself. Never use AskUserQuestion. Don't touch `framework-build/` files (read-only reference is fine, writes are not, unless told to).
 
-_Updated: 2026-07-01 (session 3)._
+_Updated: 2026-07-07 (session 5, pre-compaction)._
