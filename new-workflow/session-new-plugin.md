@@ -1,8 +1,24 @@
 # Session — New Agentic Workflow Plugin
 
-_Last updated: 2026-07-07 (session 5, mid-session compaction). Status: items 1–3 and 5 DONE; item 4 (write-spec) has a premature draft file that needs proper brainstorm + rewrite; Superpowers fork cleanup largely done. See "On resume" for exact next action._
+_Last updated: 2026-07-19 (session 11). **Repo reorg done** — this dir is now a **container** holding `agentic-workflow_v2/` (the template, renamed from `agentic-setup_v2`, own git repo) + `skills/` (new skills catalog, own git repo); design docs stay in `new-workflow/`; v1 + `framework-build` + external clones archived to `reference/`. See the **"Latest"** section directly below. TWO design threads: (1) **`project-init` / front-of-lifecycle** — `new-workflow/design-project-genesis.md` — essentially CLOSED (branches #1–#5, #8 resolved; #6 topology parked). (2) **Skill & knowledge ecosystem (#7)** — `new-workflow/design-skill-ecosystem.md` — **branches #1–#4 CLOSED, next = branch #5 (init-integration seam).** `agentic-workflow_v2/` is the primary artifact; 7 skills built + `maintaining-skills` confirmed (not yet built)._
 
 **Scope note:** this file tracks work under `new-workflow/` only. Do NOT edit `framework-build/` files without explicit instruction. **Relationship clarified 2026-07-01 (session 2):** `new-workflow/` is effectively framework-build v2 — same goal (replace the rigid Superpowers workflow), different method (curate/adapt existing Claude/Codex-compatible skill ecosystems instead of building a from-scratch guide system). `framework-build/` may be fully rewritten or abandoned — not certain. Its locked decisions (`framework-build/docs/design-session.md`, 85 decisions) are now treated as a **reference/source of validated thinking** to pull into new-workflow — read freely, cite freely, port decisions over. Just don't *write* to framework-build/ files without being told to.
+
+---
+
+## Latest — 2026-07-19 (session 11): repo reorg + skills catalog scaffolded
+
+**This `agentic-setup/` dir is now the CONTAINER**, not a workflow itself. Structure locked:
+
+- `agentic-workflow_v2/` — the template (Repo A). **Renamed from `agentic-setup_v2/`** and `git init`'d (own `.git`) by the user this session.
+- `skills/` — the personal skills catalog (Repo B), **newly scaffolded + `git init`'d** (own `.git`). Mirrors mattpocock's install-critical shape: `.claude-plugin/plugin.json` (name `adrian-skills`, empty `skills[]`), flat `skills/`, `README.md`, `CLAUDE.md` authoring guide, `.gitignore`. Installs via `npx skills add Adrian333Dev/skills` once pushed + a first `SKILL.md` exists. **Buckets deferred** (flat start, no `misc`); **versioning/changesets deferred** (branch #4). CLI finding: `npx skills init` is **per-skill only** (`<name>/SKILL.md`) — there is no repo-scaffold command; `add` works on any repo whose `SKILL.md` files carry `name`+`description` frontmatter.
+- `new-workflow/` — design lab (design docs + `research-log/`), now clone-free.
+- `reference/` — read-only: `v1-template/` (archived old root `README/SETUP/AGENTS/CLAUDE` + `docs/`), `framework-build/`, and the 7 external clones moved out of `new-workflow/` (mattpocock's → `reference/mattpocock-skills/`).
+- New root `CLAUDE.md` = **container/workbench instructions** (NOT the template's shipped CLAUDE.md, which stays deferred until v2's skills are complete). Kept in place: `.claude/settings.json` + `settings.local.json`, `.codex/config.toml`, `.mcp.json` (context7 + playwright).
+
+**Pending git (user runs — never the agent):** `git rm -r --cached agentic-workflow_v2 skills` so the parent stops tracking the two nested repos; gitignore the external clones under `reference/`; push `skills/` to `Adrian333Dev/skills`.
+
+**Still open:** archive orphaned v1 `.claude/commands/*` + `.agents/skills/checkpoint/` into `reference/v1-template/` (flagged, awaiting go). **NEXT design action unchanged: branch #5 (init-integration seam).** First catalog skill still to be authored (via `npx skills init <name>`).
 
 ---
 
@@ -16,15 +32,15 @@ Building a **new version of the agentic-setup workflow** — a curated plugin th
 
 ## Sources being gathered
 
-All 5 now cloned under `new-workflow/` (superseded `temp/repos/` paths below):
+All cloned; **relocated to `reference/` on 2026-07-19** (superseding the `new-workflow/` paths below, and earlier `temp/repos/`). mattpocock's clone was renamed to `reference/mattpocock-skills/` so it doesn't clash with the new `skills/` catalog repo:
 
 | Source | Origin repo | Location | Status |
 |---|---|---|---|
-| Superpowers (fork) | `Adrian333Dev/superpowers` | `new-workflow/superpowers/` | Cloned, currently identical to upstream `obra/superpowers` v6.1.0. Being actively modified — see Pivot execution below. |
-| agent-toolkit | `softaworks/agent-toolkit` | `new-workflow/agent-toolkit/` | Cloned. Catalogued at `temp/refs/agent-toolkit.md`. Not yet curated. |
-| mattpocock skills | `mattpocock/skills` | `new-workflow/skills/` | Cloned. Categories: deprecated, engineering, in-progress, misc, personal, productivity. Not yet catalogued in detail. |
-| taste-skill | `Leonxlnx/taste-skill` | `new-workflow/taste-skill/` | Cloned. Reference notes at `temp/refs/taste-skill.md`. Not yet tried on a real task. |
-| ui-ux-pro-max-skill | `nextlevelbuilder/ui-ux-pro-max-skill` | `new-workflow/ui-ux-pro-max-skill/` | Cloned. "161 reasoning rules, 67 UI styles" per its README. Not yet evaluated in depth. |
+| Superpowers (fork) | `Adrian333Dev/superpowers` | `reference/superpowers/` | Cloned, currently identical to upstream `obra/superpowers` v6.1.0. Being actively modified — see Pivot execution below. |
+| agent-toolkit | `softaworks/agent-toolkit` | `reference/agent-toolkit/` | Cloned. Catalogued at `temp/refs/agent-toolkit.md`. Not yet curated. |
+| mattpocock skills | `mattpocock/skills` | `reference/mattpocock-skills/` | Cloned. Categories: deprecated, engineering, in-progress, misc, personal, productivity. Not yet catalogued in detail. |
+| taste-skill | `Leonxlnx/taste-skill` | `reference/taste-skill/` | Cloned. Reference notes at `temp/refs/taste-skill.md`. Not yet tried on a real task. |
+| ui-ux-pro-max-skill | `nextlevelbuilder/ui-ux-pro-max-skill` | `reference/ui-ux-pro-max-skill/` | Cloned. "161 reasoning rules, 67 UI styles" per its README. Not yet evaluated in depth. |
 
 ---
 
@@ -274,15 +290,93 @@ Build sub-skills first, in roughly this order, then come back to finalize `brain
 8. Rewrite root `CLAUDE.md` per "Root CLAUDE.md direction" (still valid, unchanged from session 1).
 9. Still-open, non-blocking: plugin final location (new repo vs. folder vs. elsewhere), install target (replace Superpowers entirely vs. sit alongside).
 
+### agentic-workflow_v2 — template structure + executing-plans (2026-07-14, sessions 6–7)
+
+**Pivot: primary deliverable is now `agentic-workflow_v2/`**, a self-contained starter-repo template, not a collection under `new-workflow/`. Skills live in `agentic-workflow_v2/.claude/skills/`. The `new-workflow/new-skills/` folder was deleted (user deleted after confirming all skills copied to v2).
+
+**Skills in `agentic-workflow_v2/.claude/skills/` (all built):**
+- `brainstorming/` — SKILL.md + write-spec.md
+- `context-capture/` — SKILL.md
+- `research/` — SKILL.md
+- `research-evaluation/` — SKILL.md
+- `visualization/` — SKILL.md + references/ + examples/
+- `writing-plans/` — SKILL.md (updated this session — see below)
+- `executing-plans/` — SKILL.md (new this session)
+
+**Other files in `agentic-workflow_v2/`:**
+- `.claude/settings.json` — git mutation deny rules
+- `.claude/agents/haiku-worker.md` — static Haiku subagent instructions (new this session)
+- `scripts/tree.sh` + `scripts/merge-files.js` — utility scripts (merge-files extended this session with `:N-M` line range syntax)
+- `CLAUDE.md` — project template (updated with batch-checks rule + merge-files/parallel-read rule)
+- `recommended-tools.md` — catalog of optional external skills
+- `docs/work/now.md` + `docs/work/roadmap.md` — stubs
+
+**Executing-plans skill decisions (extensive brainstorm, now built):**
+
+- **Two modes:** Delegate mode (default) and Inline mode
+- **Delegate mode:** Haiku subagent executes tasks with exact code specified. Main agent dispatches with ~40-token Agent call (references files by path, does NOT generate brief content inline)
+- **Brief construction:** Main agent passes `offset`/`limit` to point Haiku at exact plan section. Haiku reads `.claude/agents/haiku-worker.md` + plan section + ≤3 source files. Main agent Sonnet output per dispatch: ~40 tokens
+- **Haiku file read budget:** soft limit 5 total (2 for instructions + plan, 3 for source files)
+- **Task classification:** DELEGATE = step includes complete exact code. INLINE = requires discovery/judgment. Plan marks INLINE tasks with `<!-- INLINE -->` comment
+- **Haiku error handling:** obvious fix → one attempt, then report. Non-obvious → NEEDS_DEBUG immediately, no guessing
+- **Debug agent:** Sonnet, `run_in_background=True` (FleetView visible + interactive). Receives full context brief. User notified when spawned
+- **Verification:** always one chained Bash call with `&&` (never separate calls) — hard rule in CLAUDE.md
+- **Progress tracking:** Edit plan.md to mark `[x]` after each verified task
+
+**merge-files.js extension:** Added `:N-M` line range syntax to path args (e.g., `plan.md:45-89`). Ranged entries skip the `--ext`/`--except` filters (explicit inclusion). Opener label shows `file:N-M` to indicate slice.
+
+**CLAUDE.md additions:**
+- `Batch sequential checks` hard rule
+- Parallel Read (≤4 files) vs merge-files (5+) guidance
+- merge-files `:N-M` syntax documented
+
+**writing-plans update:**
+- New "Delegate-Ready Tasks" section: tasks must include exact code, exact file paths, explicit verification command
+- Tasks needing discovery marked `<!-- INLINE -->`
+- Plan header updated to reference delegate/inline distinction
+
+**Study case analyzed:** `temp/study-cases/handy-workspaces/` — SDD-driven execution of a 9-task feature. Root failure: ~1.1M tokens, 90 min for a feature that should have taken 15 min. Caused by per-task implement+review subagents (each starting cold), final whole-branch review (90k tokens), mega fix-agent (124k tokens). Informed the entire executing-plans design.
+
+---
+
 ## On resume
 
-**Read this whole file. Two live sections, in this order:**
+**Current state: `agentic-workflow_v2/` is the primary artifact.** Skills built (7): brainstorming (+write-spec.md), writing-plans, executing-plans, context-capture, research, research-evaluation, visualization.
 
-1. **"Skill-by-skill audit + architecture decisions (2026-07-01, session 2)"** — the live state. Items 1, 2, 3, and 5 are done. Item 4 (write-spec) has a premature draft at `new-workflow/new-skills/write-spec/SKILL.md` — **delete it first**, then run the brainstorm properly. Superpowers reference material already read: `brainstorming/SKILL.md` spec section + `spec-document-reviewer-prompt.md`. First brainstorm question: does write-spec require `brainstorm.md` to exist, or can it synthesize from conversation context alone?
-2. **"Pivot execution (2026-07-01)"** (session 1) — background/research findings, still valid, no need to re-derive. Its old "Next actions list" is partially superseded — see the strikethrough note above it.
+### ACTIVE THREAD (2026-07-17, session 9) — Skill & knowledge ecosystem (#7)
 
-**Critical behavior note (session 5 feedback):** Never print the branch tree AND walk the first branch in the same message. Phase 1 = print tree (one message, stop). Phase 2 = one branch question + recommendation per message, wait for response. Mixing both is confusing and annoying to the user — this is now a hard rule in `brainstorming/SKILL.md`.
+**The current live design work is `new-workflow/design-skill-ecosystem.md` — read it first on resume.** It designs the reusable, growing, publishable knowledge system that sits alongside v2's process skills (the "I always lose/miss conventions" problem). Grounded in the user's own reference implementation `temp/debug-web-pages/`.
 
-Mode reminder: plain conversational brainstorming only for this meta-work — do not invoke `superpowers:brainstorming` or any other `superpowers:*` skill machinery on this effort itself. Never use AskUserQuestion. Don't touch `framework-build/` files (read-only reference is fine, writes are not, unless told to).
+**Corrected core model (confirmed):** the **skill is the atomic unit** of reusable/growing/publishable knowledge; its internal `knowledge/` folder IS the cross-project knowledge base (no separate store). Reusable → a skill; the rare project-only thing → project docs (`docs/spec/decisions`). Workflow and skills are separate publishable artifacts.
 
-_Updated: 2026-07-07 (session 5, pre-compaction)._
+**Branches CLOSED (#1–#4) — full detail in the ecosystem doc's LOCKED sections:**
+- **#1 — skill anatomy standard.** Thesis: *standardize the NAMES of the pieces, not WHICH pieces a skill has.* One hard invariant = `SKILL.md`; everything else (`knowledge/`, `tools/`, `MAINTAINING.md`) **optional-by-purpose, no thresholds.** Two heuristics: smallest-shape-that-works + load-frequency split (`SKILL.md` lean+stable+always-loaded / `knowledge/` on-demand). `DESIGN.md`/`ROADMAP.md` = WIP-only scratch, NOT anatomy; only `MAINTAINING.md` stands. Knowledge layout **emergent** (shape-library: instance-cache / topic / recipe / flat-note — OPEN, not a fixed taxonomy). `_TEMPLATE.md` scoped to instance-cache ONLY, NOT domain-agnostic. `debug-web-pages` is ONE shape, not the template.
+- **#2 — growth/maintenance framework.** *Part A:* maintenance mechanics hoisted into ONE reusable skill **`maintaining-skills`** (NEW, two-mode: **Grow** = write/promote/prune; **Audit** = check current work against a skill's best-practices). Per-skill `MAINTAINING.md` demoted to THIN config the meta-skill reads. Audit lives HERE, not in `verification-before-completion` (which isn't in v2 yet + is milestone-scoped; audit is skill-scoped/cross-cutting; future: verify MAY *call* audit but doesn't own it). *Part B (the janitor's 5 rules, plain-language):* 1 don't-write-twice→move-to-shared; 2 delete-junk-aggressively (git is the archive); 3 route-new-knowledge (general→shared / specific→that file / new-ability→tool + one line in `SKILL.md`); 4 write-only-confirmed (dated, sourced, stable-locator, guesses in "open questions"); 5 keep-notes-short (positive, single-source, leading-words).
+- **#3 — capture/routing loop** (the "I miss things" fix). Split **Notice** (free — one line into a file during work, rides on `context-capture`) from **Sort** (later, at a stopping point). The reusable-vs-project question is NOT a real fork (nearly everything is reusable) → **flip the default → a skill**; rare exception → project docs. **NO global inbox** (rejected) — a note with no skill yet → create a local stub skill on the spot. Skills are **local + git-tracked in a clone you own** so edits are visible/reviewable.
+- **#4 — publishing/packaging** (CLOSED 2026-07-18). **Load-bearing correction:** the pick-skills/pick-agent/pick-scope installer the user liked is `npx skills add` (**`vercel-labs/skills`**), NOT Claude Code's native plugin install (which is **all-or-nothing per plugin**, `/plugin marketplace add` → `/plugin install name@mkt`). A repo can satisfy both at once (mattpocock does). **Decisions:** (1) **two repos** — Repo A = workflow template (`agentic-workflow_v2`: CLAUDE.md + docs scaffold + the core "how to work" skills), Repo B = skills catalog (stack/tool knowledge skills, grows forever, installed piece-by-piece); (2) **no git submodules** — two clones side-by-side in one local folder, template references catalog by install-command/URL; (3) **core skills live INSIDE the template (Option 1)** — they're part of the workflow, version with CLAUDE.md, not external add-ons; catalog holds only stack/tool skills; (4) **link, never hard-copy** — symlink from a clone so `git pull` updates everywhere (copies are frozen; `--copy` stays available for strangers); (5) **ship both doors** — catalog is `npx skills`-installable AND carries `marketplace.json`; engine is a whole-bundle plugin; (6) **release discipline deferred** — no version numbers (Claude Code treats no-version as "every commit = latest"); add explicit versions + changesets only once strangers install.
+
+**Global-repo model (mechanics now LOCKED in branch #4 above):** hosted install-FROM source, mattpocock-style (`new-workflow/skills` = the reference) — clone → `npx skills add` picker → land local (symlinked) → edit in the git-tracked clone (edits visible) → `git push` promotes worthwhile edits UP → others `git pull`/`skills update`.
+
+**NEXT ACTION:** walk ecosystem-doc **branch #5 — init-integration seam** (at `project-init`: read the tech spec → recommend/import relevant skills, external + personal → scaffold project-local capture; touches genesis-doc #4/seeding). Then **#6** skill-creation trigger ("no skill yet → make one"; who authors it — `write-a-skill` / `superpowers:writing-skills`). That closes the ecosystem thread.
+
+**Front-of-lifecycle thread (`design-project-genesis.md`) — essentially CLOSED this session:** locked 3.2 technical core (a engine / b what-"resolved"-means / c research-plug-in+`docs/research/` storage), 3.3 interaction (4-phase A–D walk), 3.4 working memory (`docs/work/consolidation.md` + bootstrap now.md + context-capture), renamed skill **project genesis → `project-init`**, closed #4 derivation (Phase E), closed **#8 now.md = thin cursor**. Only #6 skill-topology remains parked there.
+
+**Mode reminder:** plain conversational brainstorming — do NOT invoke `superpowers:brainstorming` or the v2 `brainstorming` skill on this meta-work. Commit to a position per branch, one branch at a time. `framework-build/` + `temp/debug-web-pages/` are read-only reference; do NOT reference the deprecated v1 `project-init.md` (the new `project-init` is a fresh design reclaiming the name).
+
+### Skills still to build (after the design threads close)
+- **`debugging`** — mid-execution debug flow. Needs brainstorm. Framework-build D52-D53 has design notes (Phase 0 calibrate + 5 adaptations of diagnosing-bugs). Hard rule "never state cause without evidence" already in CLAUDE.md.
+- **`verification`** / **`finishing-topic`** — needs brainstorm (may be 1 or 2 skills)
+- **`project-init` skill** itself — build once the genesis design closes (design is essentially done; #6 topology parked).
+- **Skill ecosystem** (#7) — design in progress (`design-skill-ecosystem.md`), branches #1–#3 closed; implementation after design closes.
+- **`maintaining-skills` skill** (NEW, confirmed session 9) — the two-mode (Grow + Audit) reusable meta-skill that maintains other skills' knowledge; content = branch #2's 5 rules. Build after the ecosystem design closes.
+- **Architecture skill — INVESTIGATE (low priority, 2026-07-18):** evaluate mattpocock's `codebase-design` vs the installed `improve-codebase-architecture`; decide adopt / reuse-one / build-own. Likely lands in the global skills catalog (Repo B), not the template. Surfaced while pruning `recommended-tools.md` — deliberately kept OUT of that file until decided. Not a commitment.
+- **Plugin registration** — how to get `flow:` prefix working with local install. Deferred.
+- **CLAUDE.md final content** — deferred until all skills exist. Note: v2 CLAUDE.md session-start wording will need a tweak for the #8 now.md thin-cursor (read now.md for active topic → *infer* next action from the topic folder).
+
+**Note:** `write-spec` is NOT a missing skill — it already exists as Phase 4 of `brainstorming` (`skills/brainstorming/write-spec.md`). Earlier notes calling it a gap are outdated.
+
+**Pending mechanical fix (awaiting go):** `agentic-workflow_v2/docs/work/roadmap.md` → `backlog.md` (framework-build D16: no roadmap, flat backlog). Also (from #3.2.c): a future `docs/research/` folder convention for external research reports (`<NN>-<slug>.md`, prompt+report together, referenced not inlined).
+
+**Do NOT touch `framework-build/` files (read-only reference). Do NOT reference the deprecated v1 `project-init.md`.**
+
+_Updated: 2026-07-17 (session 9)._
