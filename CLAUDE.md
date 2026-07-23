@@ -1,79 +1,49 @@
-# <!-- Project Name -->
+# Agentic Workflow — Workbench
 
-<!-- One-sentence project description -->
+> This is the **incubator repo** for building the Agentic Workflow v2 project. It is **not** the template itself and **not** the skills catalog — those are two nested repos below. This root only holds them, the design work, and reference material.
 
-> Designed for **solo developers**. Workflow assumes one author, one branch context, no team coordination layer (no PR templates, code-owners, multi-reviewer gates).
+## Layout
 
----
+| Path | What it is |
+|------|-----------|
+| `flow/` | **The product** — the workflow template being built (own CLAUDE.md, docs scaffold, utility scripts). Own `.git`; future standalone repo. |
+| `flow-skills/` | **The personal skills catalog** — installs via `npx skills add Adrian333Dev/flow-skills`. Process and knowledge skills reused across projects. Own `.git`. |
+| `new-workflow/` | **Design lab** — the thinking behind v2: `design-*.md`, `hard-rules.md`, `session-new-plugin.md`, `research-log/`. Not shipped. |
+| `reference/` | **Read-only reference** — `v1-template/` (archived old template), `framework-build/` (v1 build notes), and cloned external skill repos (`superpowers`, `mattpocock-skills`, `taste-skill`, …). Mine it; never edit as live. |
+| `temp/` | Scratch. Gitignored. |
 
-## Project context
+`flow/`, `flow-skills/`, and the clones under `reference/` each carry their own `.git`. This root repo is the incubator around them — a temporary arrangement that gets untangled at the real repo-split later.
 
-> Fill in after running `/project-init`.
+## To resume work
 
-- **Name:** <!-- project name -->
-- **Stack:** <!-- e.g. TypeScript, React, Vite, NestJS, Supabase, pnpm -->
-- **Structure:** <!-- e.g. single app | monorepo (apps/web + apps/api + packages/contracts) | extension + dashboard | library -->
+Read **`new-workflow/session-new-plugin.md`** — the master resume file: design branches, decisions locked, next action.
 
-## Project-specific rules
+## Hard rules (this workbench)
 
-> Add rules that emerge from your spec and can't be inferred from conventions.
+- **Never run git mutations.** Suggest commands; the user runs them. Applies to every repo here.
+- **Propose a plan and wait for explicit approval before any file change.**
+- **Never delete source after copying** without a separate explicit confirmation — even inside an approved plan. Moves into `reference/` are fine; deletes are not.
+- **This meta-work uses plain conversational brainstorming** — do NOT invoke `superpowers:brainstorming` or the v2 `brainstorming` skill for designing the workflow itself.
+- **`reference/` is read-only.** Never treat it as live source.
+- **Never use the AskUserQuestion tool** — ask questions in plain prose.
+- **Never run install or setup commands** — `pnpm add`/`remove`, extensions, global CLIs, MCP servers, system packages. No exceptions; name the command, the user runs it.
+- **Keep internal reasoning out of deliverables.** Rejected-alternatives / "deliberately skipped" catalogs belong in design or notes, never in a polished artifact.
+- **Scratch files stay in-repo** (`temp/`) or the session scratchpad — never root `/tmp`.
+- **No auto-memory.** Anything worth keeping goes in the repo (this file, the session doc, or a skill), not the memory feature.
 
-<!-- e.g.
-- Never write raw SQL — use the query builder
-- All app data goes through apps/api — browser never reads DB directly
--->
+## Working with this user
 
----
+- Solo developer. Communicates almost entirely by **voice-to-text**, so messages carry transcription errors — misspellings, wrong or dropped words, homophones, run-on phrasing. Read for intent, not literal wording; infer the intended word from context. Ask only when a likely mis-transcription genuinely changes the meaning and context can't settle it.
+- **No fluff.** No cheerleading, no jargon, no filler, never "you're absolutely right." Every sentence earns its place. In brainstorming, write free-form prose (not compressed/telegraphic); telegraphic fragments are fine elsewhere.
+- Works iteratively: commit to a recommendation so he can react, rather than laying out every option neutrally.
 
-## Session start
+## Communication (/copy + comprehension)
 
-1. Read `docs/work/now.md` to find the active milestone and next action.
-2. Read `docs/agents/workflow-rules.md`.
-3. If the active milestone folder has `session.md`, read it before reading source files.
-4. The next action in `now.md` is usually a **Superpowers** skill — invoke it rather than improvising.
+- The user copies the **last message** of each turn with a `/copy` command. Put **all tool calls — reads and writes — before the final prose**, and make the full response the last thing in the turn. Never emit prose and then edit files after it.
+- **Batch writes.** Write to working docs only when a decision is genuinely locked (no open threads on it), and let a few accumulate before recording them together — not every turn.
+- **Explain artifacts from zero.** Never assume the user has read a research report or a file. Explain the relevant content in plain language — what it says, what you conclude, what you propose, why. Research reports get the strongest form: assume zero lines read. (Earlier chat messages are fine to assume read.)
 
-## Workflow — Superpowers as the engine
+## Not to be confused
 
-This template's design → plan → implement → verify → ship loop runs on the Superpowers skill suite. Per milestone:
-
-```
-superpowers:brainstorming                    → spec.md
-[grill-me]                                   → stress-test the spec
-superpowers:writing-plans                    → plan.md
-superpowers:subagent-driven-development      → implement (or executing-plans for simpler work)
-[checkpoint mid-session]                     → session.md
-superpowers:verification-before-completion   → verify against plan + conventions
-superpowers:requesting-code-review           → pre-merge review
-superpowers:finishing-a-development-branch   → wrap, update now.md, adjust roadmap.md
-```
-
-Skills override default agent behavior. When `now.md` points to one, use it.
-
-`grill-with-docs` is an opt-in alternative to `grill-me`, useful once the project has accumulated domain terminology. It writes to repo-root `CONTEXT.md` and `docs/adr/` (not the milestone folder) — invoke it deliberately, not by default.
-
-## Hard rules
-
-All process rules live in `docs/agents/workflow-rules.md` — read it at session start. Key non-negotiables also enforced here:
-
-- **Never run git mutations.** Suggest commands; the user runs them. (Also enforced via `.claude/settings.json`.)
-- **One formal milestone at a time.** Only one `spec.md` + `plan.md` exists at any moment.
-- **No placeholders in plans.** Real file paths, real code, real commands — always.
-
-## Superpowers path overrides
-
-- Specs → `docs/work/milestones/<slug>/spec.md`
-- Plans → `docs/work/milestones/<slug>/plan.md`
-
-## Key docs
-
-| Doc | Purpose |
-|-----|---------|
-| `docs/work/now.md` | Active milestone and next action |
-| `docs/work/roadmap.md` | Loose blueprint of upcoming work — not a commitment |
-| `docs/spec/` | Project bible (product + tech) |
-| `docs/agents/conventions.md` | Coding conventions — base + stack layer; living document |
-| `docs/agents/workflow-rules.md` | Milestone process rules — agent behavior during workflow; living document |
-| `docs/agents/commands.md` | Dev/test/build/lint commands; living document |
-| `docs/agents/setup-notes.md` | One-time setup decisions, scaffold commands, tooling configuration choices |
-| `docs/agents/recommended-tools.md` | Skills, MCPs, plugins reference |
-| `docs/references/llms.md` | Optional `llms.txt` overrides for specific libraries |
+- `flow/CLAUDE.md` — the **template's** own instructions (deferred; finalized only once its skills are complete). Different file, different job from this one.
+- `flow-skills/CLAUDE.md` — the **skills catalog's** authoring guide.
