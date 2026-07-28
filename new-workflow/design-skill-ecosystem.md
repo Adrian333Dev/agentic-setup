@@ -4,18 +4,18 @@ _Live brainstorm record. Spun out of `design-project-genesis.md` (#7) on 2026-07
 
 The **reusable, growing, publishable knowledge system** that sits alongside v2's process skills. Bigger than "conventions" — it's how hard-won engineering knowledge is captured, compounded across projects, maintained without rotting, and published. Linked to `design-project-genesis.md` only at the seams (init-seeding, capture-routing).
 
-**Origin:** v2 kept the *process* layer (skills — brainstorming/plans/execute/research/etc.) but dropped framework-build's *knowledge* layer (the guide system). The user's pain ("I always miss/lose conventions, rules, patterns") is that dropped layer. This doc designs its replacement — grounded in the user's own reference implementation, `temp/debug-web-pages/`.
+**Origin:** v2 kept the *process* layer (skills — brainstorming/plans/execute/research/etc.) but dropped framework-build's *knowledge* layer (the guide system). The user's pain ("I always miss/lose conventions, rules, patterns") is that dropped layer. This doc designs its replacement — grounded in the user's own reference implementation, `tmp/debug-web-pages/`.
 
 ---
 
 ## Ground rules (same as the genesis doc)
 - **Plain conversational brainstorming only.** Do NOT invoke `superpowers:brainstorming` or the v2 `brainstorming` skill on this meta-work.
 - One branch at a time; agent commits to a position; write the decision before moving on.
-- `framework-build/` and `temp/debug-web-pages/` are **read-only reference.** No file changes to deliverables without explicit approval.
+- `framework-build/` and `tmp/debug-web-pages/` are **read-only reference.** No file changes to deliverables without explicit approval.
 
 ---
 
-## The reference implementation — `temp/debug-web-pages/` (studied 2026-07-17)
+## The reference implementation — `tmp/debug-web-pages/` (studied 2026-07-17)
 
 A skill is not a static instruction file. It's a **self-contained, growing, publishable knowledge unit** with a deliberate anatomy:
 
@@ -128,6 +128,31 @@ It belongs **only** to the instance-cache shape (N structurally-similar files wo
 - ❌ "anatomy = the `debug-web-pages` full shape as the default template" — wrong; that's the *top of the ladder / one shape*.
 - ❌ "keep `domains/` as the fixed sub-bucket name regardless of semantic unit" — wrong; forces the word "domain" onto skills that have none.
 - ❌ "meta-docs are a standing trio (DESIGN/ROADMAP/MAINTAINING)" — wrong; only `MAINTAINING` stands, and only for knowledge-growing skills.
+
+---
+
+## SUPERSEDING UPDATE — 2026-07-24 (session 14e): operational layer redesigned
+
+Re-examined the operational branches below and found them over-built. **The core model (skill = atomic, git-tracked, symlink-live, per-skill install, on-demand loading) STANDS.** What changed is the *operational layer* — capture, filing, skill maintenance. Full walk: `session-new-plugin.md` → the **session 14e** block. Summary + branch-by-branch supersession:
+
+**Capture → inbox.** `capture-context` stays the ONLY passive behavior, now **relaxed** (occasional reflex + user-promptable, not every-turn). During work it dumps *everything worth keeping* — decision / finding / idea / reusable knowledge, all mixed — RAW into ONE file **`docs/work/inbox.md`** (name changeable), scoped to the active topic/milestone. **No destination decision at capture time** (that's the win — kills "this fits three files at once"). Exception: an active `brainstorm.md`/`spec.md` owns its own in-progress content.
+
+**Two on-demand commands** (replace the single two-mode `maintaining-skills`):
+- **`organize`** (frequent) — drains the inbox, routes each item to its home (project files + appends reusable lines to skills that ALREADY exist). capture-context's old capture-time routing table moves HERE. Reusable knowledge with NO home skill → it **flags** it ("needs new skill: X"), never stub-creates mid-flight.
+- **`curate-skills`** (deliberate) — build a new skill, restructure, prune. Prunes only what's WRONG or OUTDATED, never "just an opinion."
+- Dividing rule: **adding a line = `organize`; building/reshaping a skill = `curate-skills`.**
+
+**Trigger** (the gap the old design never closed): `organize` is offered at the **review step**, which recurs after EACH artifact (brainstorm/spec/plan/execute) — surface-and-offer, deferrable; the inbox **persists across any U-turn/loop-back** so nothing is lost. The review/finalize phase is itself undesigned and owns this trigger (deferred thread).
+
+**Skills = plain best-practices / tips / guides in prose — NO taxonomy** (rejected a fact/stance/open-question split as overcomplication; `debug-web-pages` is the model). Cross-cutting rules route by **altitude**: tool quirk → tool skill; framework pattern → framework skill; broad principle ("never let the client touch the DB") → a high-level **concept skill** (e.g. `architecture`); integration gotcha → the source-of-the-quirk tool + a pointer. **Never a tool-combo skill** (combinatorial explosion). One home, pointers elsewhere, never duplicate.
+
+**Audit** (the old Grow/Audit read-mode) is **PARKED** — a separate future feature; when built, scope it to the skills the work touched.
+
+**Branch-by-branch:**
+- **Branch #2 (Part A + B)** — `maintaining-skills` two-mode + the janitor's 5 rules → **REPLACED** by `organize` + `curate-skills`. The 5 rules collapse to: prune wrong/outdated (not "when unsure"); one home + pointers (never duplicate); knowledge is prose. Audit split out + parked.
+- **Branch #3** — Notice/Sort/no-global-inbox/stub-on-the-spot → **REPLACED** by the inbox model + `organize` + flag-not-stub. ("No global inbox" still holds — `inbox.md` is per-project + temporary, not a cross-project store.)
+- **Branch #4** — point 3 ("core how-to-work skills live INSIDE the template") is **STALE**: all six skills live in the catalog (`flow-skills`); the template ships zero. The rest of Branch #4 (two repos, link-not-copy, both distribution doors, deferred release discipline) still holds.
+- **Branch #1** (skill anatomy) — **unaffected**, still current.
 
 ---
 
@@ -254,8 +279,8 @@ Keep a real git clone of the catalog → symlink it into `~/.claude/skills` → 
 ---
 
 ## Reference pointers
-- `temp/debug-web-pages/` — the reference implementation (SKILL.md, DESIGN.md, ROADMAP.md, MAINTAINING.md, `knowledge/domains/youtube-watch.md`, `knowledge/domains/_TEMPLATE.md`, `knowledge/capturing-and-querying.md`).
-- `mattpocock/skills` (studied in `temp/repos/skills/` per debug-web-pages ROADMAP) — the personal-skills-repo publishing model.
+- `tmp/debug-web-pages/` — the reference implementation (SKILL.md, DESIGN.md, ROADMAP.md, MAINTAINING.md, `knowledge/domains/youtube-watch.md`, `knowledge/domains/_TEMPLATE.md`, `knowledge/capturing-and-querying.md`).
+- `mattpocock/skills` (studied in `tmp/repos/skills/` per debug-web-pages ROADMAP) — the personal-skills-repo publishing model.
 - `framework-build/docs/guides/` + `docs/design-session.md` D35–85 — the earlier guide-system take on this same problem (3 tiers core/domain/stack, `list-guides.sh`, D69 notes-first review-gated update model). Historical; superseded by the skill-as-unit model but the tier idea + update model inform #2.
 - `new-workflow/agent-toolkit/` — external skill plugin (react-dev, react-useeffect, database-schema-designer) = examples of general/reusable skills to reference, not duplicate.
 - `design-project-genesis.md` — the front-of-lifecycle doc; #7 pointer + the seams (#5 init integration, #3 capture-routing).

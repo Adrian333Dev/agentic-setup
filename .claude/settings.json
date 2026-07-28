@@ -1,6 +1,25 @@
 {
+  "enabledMcpjsonServers": ["context7"],
+  "disableBundledSkills": true,
+  "disableWorkflows": true,
+  "disableRemoteControl": true,
+  "disableClaudeAiConnectors": true,
+  "disableArtifact": true,
   "permissions": {
     "deny": [
+      "EnterPlanMode",
+      "ExitPlanMode",
+      "DesignSync",
+      "NotebookEdit",
+      "SendMessage",
+      "PushNotification",
+      "RemoteTrigger",
+      "ReportFindings",
+      "ScheduleWakeup",
+      "AskUserQuestion",
+      "CronCreate",
+      "CronDelete",
+      "CronList",
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(git push:*)",
@@ -21,5 +40,6 @@
       "Bash(git worktree add:*)",
       "Bash(git worktree remove:*)"
     ]
-  }
+  },
+  "autoMemoryEnabled": false
 }

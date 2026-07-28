@@ -10,7 +10,7 @@
 | `flow-skills/` | **The personal skills catalog** — installs via `npx skills add Adrian333Dev/flow-skills`. Process and knowledge skills reused across projects. Own `.git`. |
 | `new-workflow/` | **Design lab** — the thinking behind v2: `design-*.md`, `hard-rules.md`, `session-new-plugin.md`, `research-log/`. Not shipped. |
 | `reference/` | **Read-only reference** — `v1-template/` (archived old template), `framework-build/` (v1 build notes), and cloned external skill repos (`superpowers`, `mattpocock-skills`, `taste-skill`, …). Mine it; never edit as live. |
-| `temp/` | Scratch. Gitignored. |
+| `tmp/` | Scratch. Gitignored. |
 
 `flow/`, `flow-skills/`, and the clones under `reference/` each carry their own `.git`. This root repo is the incubator around them — a temporary arrangement that gets untangled at the real repo-split later.
 
@@ -20,15 +20,14 @@ Read **`new-workflow/session-new-plugin.md`** — the master resume file: design
 
 ## Hard rules (this workbench)
 
-- **Never run git mutations.** Suggest commands; the user runs them. Applies to every repo here.
+- **Never run git mutations** (the deny list blocks them). Suggest the exact command; the user runs it. Applies to every repo here.
 - **Propose a plan and wait for explicit approval before any file change.**
 - **Never delete source after copying** without a separate explicit confirmation — even inside an approved plan. Moves into `reference/` are fine; deletes are not.
 - **This meta-work uses plain conversational brainstorming** — do NOT invoke `superpowers:brainstorming` or the v2 `brainstorming` skill for designing the workflow itself.
 - **`reference/` is read-only.** Never treat it as live source.
-- **Never use the AskUserQuestion tool** — ask questions in plain prose.
 - **Never run install or setup commands** — `pnpm add`/`remove`, extensions, global CLIs, MCP servers, system packages. No exceptions; name the command, the user runs it.
 - **Keep internal reasoning out of deliverables.** Rejected-alternatives / "deliberately skipped" catalogs belong in design or notes, never in a polished artifact.
-- **Scratch files stay in-repo** (`temp/`) or the session scratchpad — never root `/tmp`.
+- **Scratch files stay in-repo** (`tmp/`) or the session scratchpad — never root `/tmp`.
 - **No auto-memory.** Anything worth keeping goes in the repo (this file, the session doc, or a skill), not the memory feature.
 
 ## Working with this user
