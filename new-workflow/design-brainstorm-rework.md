@@ -70,6 +70,20 @@ Its scope will change significantly based on input the user has yet to give. Tha
 
 ---
 
+## UPDATE 2026-08-02 — product mode moves to the front of the build queue
+
+From `design-init-flow.md` `## SESSION 2026-08-02 — Flow goes global`. Three changes land here:
+
+- **Product mode is now the entry point to the whole workflow**, not a step after `init-flow`. It runs **anywhere — no repo, no setup, no Flow install** — because commitment to a project is an output of the brainstorm, not a precondition. The user's real pattern: an ideas repo holding many half-formed products across many sessions, most of which never become projects. Nothing in this mode may depend on a project layout existing.
+- **It opens with a profile check.** If `~/.claude/CLAUDE.md` lacks the Flow profile, product mode **redirects the user to `setup-flow-globals`** and does not do that work itself (user was explicit: writing the global profile must not be a sub-feature of brainstorming).
+- **Branch #D (overlap with `project-init`) is fully closed.** `init-flow` no longer exists as designed; its successor `migrate-to-flow` runs *after* product mode, only for existing codebases. No convergence question remains.
+
+**Watch while writing #C (the engine):** product questions are **elicitation** ("what are you actually trying to do"), technical questions are **propose-and-react**. If those need genuinely different rules, that is a sub-file in this skill. It is *not* a standalone interview skill — Matt's `grilling` is seven lines and Phase 2 already contains all of it.
+
+Build order: this skill is **step 2**, after `flow/` is restructured for the global split and before `setup-flow-globals` and `migrate-to-flow`.
+
+---
+
 ## OPEN branches
 
 - **#A — The full-product output's actual file set.** Base trio plus which emergent files? How do marketing and UX/UX-research areas map onto it? Does the agent propose the structure at close the way `project-init` Phase C does, or is there a default set? This is the hard part and needs a real walk — "tricky to get right" (user).

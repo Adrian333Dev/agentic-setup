@@ -81,7 +81,7 @@ Two earlier framings by the assistant were WRONG and are superseded: (1) "knowle
 - **#2 — Growth / maintenance framework** — **CLOSED (2026-07-17).** Part A (*where* maintenance lives) + Part B (the janitor's 5 rules) both locked below. Reusable `maintaining-skills` skill (Grow + Audit modes) + thin per-skill config; 5 rules = don't-duplicate, delete-junk, route-new-knowledge, write-only-confirmed, keep-notes-short.
 - **#3 — Capture / routing loop** — **CLOSED (2026-07-17).** See locked decision below. Notice (free, during work) split from Sort (at a stopping point); default route = a skill, rare exception = project docs; **no global inbox**; the "reusable vs project-specific" question is NOT a real fork (nearly everything is reusable). *(The part that fixes "I miss things.")*
 - **#4 — Publishing / packaging framework** — **CLOSED (2026-07-18).** See locked decision below. Two repos (workflow-template + skills-catalog), developed side-by-side in one local folder (NOT git submodules). Core "how to work" skills ship *inside* the template (Option 1). Distribution ships **both doors**: `npx skills` picker (per-skill / per-agent / per-scope) + Claude Code `marketplace.json`. **Link, never hard-copy** (so `git pull` updates everywhere). Release discipline deferred until strangers install.
-- **#5 — Init integration (seam to `project-init`)** — **NEXT TO WALK.** At init: read the tech spec → recommend/import relevant skills (external + personal) → scaffold project-local capture. Touches genesis-doc #4/seeding.
+- **#5 — Init integration (seam to `project-init`)** — **CLOSED (2026-07-30).** See the locked decision below. No seam survives: project-local capture ships in `CLAUDE.md`, the recommender has an empty candidate set (zero stack skills in the catalog) and is deferred, external-skill recommendation is dropped, and `init-flow`'s skill step is a presence check that prints the install command.
 - **#6 — Skill-creation trigger** — when a recurring pattern graduates from project notes into a *new* skill; who authors it (existing `write-a-skill` / `superpowers:writing-skills`?).
 
 ---
@@ -275,6 +275,24 @@ Keep a real git clone of the catalog → symlink it into `~/.claude/skills` → 
 ### Seams (decided elsewhere)
 - Seeding proven skills into a *new* project at init → **Branch #5.**
 - "No skill yet → create one" as the skill-birth trigger → **Branch #6.**
+
+---
+
+## LOCKED — Branch #5: Init integration seam (2026-07-30)
+
+Walked under `design-init-flow.md`'s standing principle (the only user is the author). The branch as written — *"read the tech spec → recommend/import relevant skills (external + personal) → scaffold project-local capture"* — is three clauses. Two die, one defers, and what remains is a check rather than an integration.
+
+**Scaffold project-local capture — DEAD.** Capture moved into `flow/CLAUDE.md` `## Capture` (`design-capture-rework.md`), and `inbox.md` is created on first write. It arrives with the payload; there is nothing to scaffold.
+
+**Recommend from the tech spec — DEFERRED, no recommender.** It never applied to the process skills: those are *mandatory*, not recommended — Flow doesn't run without them, and `check-skills.sh` already enforces presence at SessionStart. It only ever applied to stack/knowledge skills, and the catalog holds **zero** of those today (all eight are process or domain skills). A recommender over an empty candidate set is machinery built ahead of its input. When stack skills exist, `npx skills add`'s own per-skill picker is already the selection UI; `init-flow`'s whole contribution would be one line naming a match against the stack it detected while harvesting. Revisit then.
+
+**External skills — DROPPED.** Recommending third-party skills means `init-flow` carrying a registry of other people's work and keeping it current. The author installs what he wants.
+
+**What `init-flow` actually does about skills: verify, never install.** Skills are globally symlinked on the author's machine (session 13 — one symlink per skill into the catalog clone), so on his own machine every project already has them and a per-project install is redundant. Flow's own hard rule forbids running install commands anyway. So the step is the check `check-skills.sh` already performs, run once at init: anything missing → print `npx skills add Adrian333Dev/flow-skills` and let the user run it. The hook ships in the payload and takes over from the next session.
+
+**Found while walking — `check-skills.sh` is stale.** Its required list is `brainstorm research explain note organize execute`: `note` is dissolved and archived, and `handoff` + `curate-skills` are missing. `debug-web-pages` is correctly absent — it's a domain skill, not required. → `new-workflow/backlog.md`.
+
+**Net: the branch closes without a seam.** The genesis-#4 seeding link it was named for is a no-op for a globally-symlinked author.
 
 ---
 

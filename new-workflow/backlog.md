@@ -1,6 +1,6 @@
 # Workbench backlog
 
-Flat list of loose items raised in session and not yet handled. Not ordered, not a commitment. Drain into design docs or into `flow/` / `flow-skills/` as they get picked up.
+Flat list of loose items raised in session and not yet handled. Not ordered, not a commitment. Drain into design docs or into `flow/` as they get picked up.
 
 ---
 
@@ -26,13 +26,15 @@ Flat list of loose items raised in session and not yet handled. Not ordered, not
 - **Milestone-level handoff path** — where a handoff lives when a milestone rather than a topic is the unit.
 - **Design the review/finalize phase that triggers `organize`.**
 - **Rewrite `session-new-plugin.md`'s stale "Skills still to build" list.**
-- **Ecosystem branches #5 and #6** in `design-skill-ecosystem.md` — the init-integration seam (partly answered by `init-flow`) and the skill-creation trigger.
+- **Ecosystem branch #6** in `design-skill-ecosystem.md` — the skill-creation trigger. (#5 closed 2026-07-30.)
+- **No Flow skills are linked globally (2026-08-03).** The five stale `~/.claude/skills/` links into `flow-skills/` were removed; `~/.claude/skills/` now holds only the three unrelated `.agents/` links. **Deliberate — the skill set is not finalized, so nothing gets linked until it is.** Until then no Flow skill loads in any project, and `flow/skills/` is edited as plain files. When ready: `bash /home/me/code/projects/agentic-setup/flow/global/scripts/link-skills.sh`. Do not link earlier "for convenience."
+- **`autoMemoryEnabled: true` in `~/.claude/settings.json`.** Auto memory is on globally and has written live memory dirs for `backmark` and `backmark-validation`. Flow's own settings already set it false. Flips when `global/settings.json` gets merged in (`design-init-flow.md` #G5, #G8).
+- **Commit messages.** Every commit in `flow` and the workbench says `save`, which is why the per-skill changelog has to carry the reasoning (`design-init-flow.md` #H5). Real messages would make most of that free.
+- **Decide the "already on Flow" marker** for `migrate-to-flow`. `## Workflow` left the project `CLAUDE.md` under the global split, so the old detection breaks. Presence of `docs/work/backlog.md` is the leading candidate. Trivial; unrelated to the retired divider (#H4).
+- **Test built-in `/init` with `CLAUDE_CODE_NEW_INIT=1`** against a real repo before writing `migrate-to-flow`'s survey phase — it already does subagent codebase exploration, gap questions, and a reviewable proposal.
+- **Revisit stack-skill recommendation at init** once the catalog holds any stack/tool skills — today it holds eight process/domain skills and zero stack skills, which is why ecosystem #5 deferred it.
 
 ## Migration
 
-- **Migrate the user's own active projects to Flow once it's ready** — `delapse` and `lumacraft_v2` are the real migration test cases, and the reason the migration path has to work. Afterwards the externally installed skills get deleted from those projects.
+- **Migrate the user's own active projects to Flow once it's ready** — `delapse` and `lumacraft_v2` are the real migration test cases, and the reason the migration path has to work. Afterwards their project-local skills get deleted: skills are global-only now, one symlinked copy per machine, never copied into a project (`design-init-flow.md` #H1).
 - **Harvest `delapse` / `lumacraft_v2` / `framework-build` knowledge into skills** — the reference projects hold hard-won material that should not be lost when they migrate.
-
-## Pending decisions
-
-- **`reference/archived-skills/note/`** — still awaiting a delete decision. Committed there either way; git retains it.
