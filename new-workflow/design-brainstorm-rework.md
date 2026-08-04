@@ -109,8 +109,73 @@ The branch tree, the one-branch-at-a-time walk, agent-proposes-first, and the **
 
 ---
 
+## SESSION 2026-08-04 — full restart; the two-mode premise is void
+
+Walked conversationally. **Every structural proposal made this session was rejected by the user.** What survives is evidence, constraints, and a list of dead ends — recorded so the restart does not re-walk them. The restart designs from scratch.
+
+### The two-mode premise is dead
+
+User, unprompted: *"I really don't like having modes… there will be a lot of stuff that will be kind of maybe in between. I felt like having just one brainstorming skill with a single mode that could handle everything would be better."*
+
+Voids **#1** (two modes) and, with it, **#2**, **#5** and **#7** — each exists only to describe the second mode. **#3** (target is `docs/spec/`), **#4** (no `intake/` dependency), **#6** (the phase cut must be written down) and **#8** survive; none needs modes. Open branches **#A**, **#B**, **#C**, **#E**, **#F**, **#G** are void as phrased — every one presupposes a full-product *mode*.
+
+Scope widened too: the user's judgement is that `brainstorm`, `write-spec.md` and `write-plan.md` all need rewriting rather than patching, and `execute` is implicated through its dependence on one large plan file. This does **not** overturn `design-init-flow.md` #6b — the walk itself (tree, one branch at a time, agent-proposes-first, Decision/Reasoning/Rejected) is still the part that works.
+
+### Study case — `tmp/local-refs/delapse-docs`
+
+The user's own SaaS project, ~40 milestones deep, run on the v1 workflow. Full `docs/` tree, copied in by the user 2026-08-04 specifically as a test case: *"that was a terrible flow we went with — I just want to make sure this new flow can really tackle such tasks."*
+
+| | |
+|---|---|
+| size | 180 files; `work/` alone is 80,229 lines |
+| `plan.md` | the bulk of it — m10 2,977; m07 2,875; m11 2,664 |
+| `spec.md` | ~30 files, 10,264 lines, ~340 each |
+| `issues.md` | 22 files, **608 lines total** (~28 each) |
+| `roadmap.md` / `now.md` | 385 / 417 |
+
+**The system diagnosed itself.** `work/audit/index.md`, written by that project's own agent: *"The milestone specs captured only each milestone's initial phase, not the full feature scope, and designs changed underneath them. So `now.md`, `roadmap.md`, and the milestone specs systematically under-count what's missing. This folder is the trustworthy inventory we carve milestones out of — code-truth first, not doc-truth."* After ~40 milestones the project had to re-derive nine documents from the code because every planning document had drifted out of trust.
+
+**Small append-as-you-go files stayed true; large forward-looking files rotted.** `roadmap.md` carries strikethrough entries and one that says outright "the list to work from is `docs/work/audit/bugs.md`, not this entry." `now.md` was specified as a thin cursor and reached 417 lines. `issues.md` — ~28 lines per milestone, written *during* the build — is the highest value-per-line artifact in the set.
+
+**Spec and plan said the same thing twice.** `m00-monorepo-scaffold/spec.md` (422 lines) contains `turbo.json` verbatim, `.npmrc` contents and every pinned version; `plan.md` (1,331 lines) then repeats all of it as steps.
+
+**The milestone kept splitting under pressure** — m07c, m07d, m08e, m12a/b/c, m15a, m16a, m17a, m19a, m24a/b, m29a/b/c. Plans died before shipping: `plan-superseded.md`, `plan-b.md`, `plan-draft.md`.
+
+**Implementation surprises were caught by reading code, not by writing code into plans.** `m29a/issues.md`'s findings — no repository has a delete method, pg-boss cancellation unusable per-entity, `LOG_LEVEL` never did anything, `AI_MOCK`/`TEST_REAL_LLM` were one decision spelled twice — sit under the heading **"Pre-planning verification."** The 2,227-line plan did not find them; a deliberate pass against the code did.
+
+**`docs/spec/` is not accused.** The audit names `now.md`, `roadmap.md` and the *milestone* specs. The project-level folder (`PRODUCT-SPEC.md` 695, `DECISIONS-LOG.md` 560, `product-brief.md` 210, `tech.md` 182, `OPEN-QUESTIONS.md` 102) is not on that list.
+
+**Not everything lived in a milestone.** `work/` also holds `audit/`, `voiceover-feature/`, `flow-brainstorm/`, `llm-mock-brainstorm/`, `dev-panel-program.md`, `financial-plan.md`.
+
+### Constraints the restart must satisfy — all user-stated this session
+
+- **The tree stays.** Free-form, arbitrary depth, sub-branches added mid-walk, jumping back up to a root branch. Its freedom is the point.
+- **One flow, no modes.** In-between cases are the norm, not the exception.
+- **A shipped milestone's spec is a history log.** It records what was executed; going stale afterwards costs nothing — *"that old milestone can stay as is, and we're obviously going to come up with a new milestone to rewrite it."* Do not design for its survival.
+- **The milestone earned its place by being testable.** It ends where a large chunk can actually be tried. Some work cannot be exercised at all until several milestones complete — the user's example: a free-trial abuse-prevention pipeline spanning three or four. **Any smaller unit must not push the first moment of real testing further out.**
+- **Complete code in plans existed for a reason** — to surface implementation surprises at plan time, when they are cheap. Any replacement must say concretely how those surprises get caught instead.
+- **Change is the normal case.** A U-turn after milestone 1 is expected, decisions are not locked, and problems are often visible only after implementing. The user: solo dev, somewhat experienced in SaaS, not experienced at this scale, works "in kind of chaotic flow." A `prototype` skill is planned to reduce this, but the workflow must handle it either way.
+- **Backlog and roadmap are to be deprecated**, at least partly, in favour of specs and tickets.
+- **Wayfinder is reference only.** The user has not read it; anything taken from it must be explained from zero, and dropping it entirely is explicitly acceptable.
+
+### Rejected this session — do not re-propose
+
+- **A flat index file** (`map.md` with Open / Decided / Fog sections) replacing the tree. Loses the free-form depth that makes the tree work.
+- **One file per decision, one file per task.** No principled rule for where the splits fall, and it scales to hundreds of files. The 2,000–3,000-line plans have a simpler cause: the rule requiring complete code in every step.
+- **"Would this sentence still be true if it were built a different way? Yes → spec, no → tasks."** Applies a rule meant for a re-read document to one that is a record. User: *"That doesn't really matter, because that's just a history log."*
+- **Adopting delapse's `bugs.md` / `debt.md` / `checks.md` as workflow files.** The sharpest rejection of the session, and correct: `checks.md` is browser QA for a Chrome extension, specific to that project, and the whole `audit/` folder is a **recovery artifact from a broken process**, not a designed workflow. Reusing it imports the v1 flow this rework exists to replace. General lesson: the study case is evidence of what *failed*, never a file set to copy.
+- **Renaming `plan.md` → `tasks.md`/`tickets.md`, `issues.md` → `notes.md`.** Churn with no argument behind it.
+- **"Ticket" as vocabulary.** User: *"to me it seems like ticket is more like a single task rather than ticket."* It is the same unit already called a task.
+
+### Method note for the restart
+
+The session failed by moving the proposal every turn in answer to each objection, so there was never a stable target to react to, and each answer reintroduced a problem an earlier one had solved. Fix a shape first, then work objections against it without redrawing it mid-argument.
+
+---
+
 ## Reference pointers
 
+- `tmp/local-refs/delapse-docs/` — the 2026-08-04 study case (180 files; `work/audit/index.md` is the self-diagnosis).
 - `tmp/study-cases/read-aloud-app/case3/` — the study case (`brainstorm.md` 1069 lines, `spec.md` 309).
 - `new-workflow/design-project-genesis.md` — #1 canonical `docs/spec/` target, #2 intake, #3.2.a project-altitude engine, #3.2.c research storage split, #4 derivation, #5 single adaptive flow.
 - `flow-skills/skills/brainstorm/` — `SKILL.md`, `write-spec.md`, `write-plan.md`.

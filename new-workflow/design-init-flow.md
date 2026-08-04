@@ -470,8 +470,9 @@ flow/
 ├── README.md              setup guide — the only onboarding path
 ├── global/                → ~/.claude/
 │   ├── CLAUDE.md          the nine sections, template version
-│   ├── settings.json      git deny list + feature flags — no hooks
-│   └── scripts/           tree.sh, merge-files.js, link-skills.sh
+│   ├── settings.json      permissions (allow + deny), the PreToolUse hook, feature flags
+│   ├── settings.md        what every key in settings.json is for and why
+│   └── scripts/           tree.sh, merge-files.js, link-skills.sh, guard.py
 ├── skills/                the eight live skills, symlinked into ~/.claude/skills/
 │   └── CLAUDE.md          authoring guide
 └── project-template/      CLAUDE.md (## Project + ## Project rules), .gitignore, docs/work/backlog.md
@@ -481,15 +482,45 @@ Script paths in rules and skills are written `~/.claude/scripts/…`. `global/CL
 
 **Build order 2–4 unchanged.** Step 3 (`setup-flow-globals`) now has a concrete job: run `link-skills.sh`, symlink `~/.claude/scripts`, copy `global/CLAUDE.md` (never overwrite), merge `global/settings.json` key by key, interview for `## The user`.
 
-### #H8 — `check-skills.sh` deleted; Flow ships no hooks
+### #H8 — `check-skills.sh` deleted
 
-The SessionStart hook verified that seven named skills existed under `~/.claude/skills/`, silent when they did. **Deleted 2026-08-03, along with the `hooks` key in `global/settings.json`** — SessionStart was the only hook, so Flow now ships none.
+> **Corrected same day.** This section originally closed with "Flow now ships no hooks," stated as a rule. That generalization was the agent's, extrapolated from one deletion; the user never decided it and there was no reasoning behind it. **Withdrawn — Flow ships a `PreToolUse` hook, see #H9.** What follows is about `check-skills.sh` only.
+
+The SessionStart hook verified that seven named skills existed under `~/.claude/skills/`, silent when they did. **Deleted 2026-08-03, along with the `hooks` key in `global/settings.json`** — SessionStart was the only hook at the time.
 
 It was built against per-project `npx skills add` distribution, where any machine or project could be un-installed or drifted. Under #H1 there is one clone and one set of symlinks: skills are all linked or none are, and there is no partial state left to detect. What survived was a per-session check for a per-machine condition that step 3 (`setup-flow-globals`) will itself resolve by running `link-skills.sh`.
 
 **The deciding cost is the hardcoded roster.** Its seven names had to be hand-edited on every skill add, rename or removal, and had already gone stale once (`note` listed after it dissolved; `handoff` and `curate-skills` missing) — a checker whose list drifts either cries wolf or hides a real gap.
 
 **Replaced by one clause in `global/CLAUDE.md` `## Workflow`:** *"A skill listed here that isn't installed → say so and stop; never improvise its function."* Same hazard — silent improvisation — caught where the agent meets it rather than in a session-start banner, with no roster to maintain. Supersedes ecosystem #5's "mandatory, already enforced by `check-skills.sh`" and the enforcement clause of session 14's distribution model.
+
+### #H9 — Permission model: blanket allow + deny list + a `PreToolUse` guard
+
+**The problem.** Every novel Bash command stops and asks. "Yes, don't ask again" saves the *exact command string*, so `tree.sh --depth 3` and `tree.sh --depth 4` become two separate rules. The result is an allow list of commands already run, which never converges — the workbench's `.claude/settings.local.json` had accumulated ~50 entries, most pointing at paths the #H1 restructure had already moved.
+
+**Rejected — auto mode** (`permissions.defaultMode: "auto"`). A Sonnet 5 classifier reviews each action before it runs; routine work goes silent and a documented list of escalations gets blocked. Deny rules survive it, so the git list would have held. Killed on cost: every shell command and network call becomes a model call carrying a slice of the transcript, and this workflow is mostly shell. User's objection, and it was correct.
+
+**Rejected — the Bash sandbox.** Bubblewrap jail in auto-allow mode: OS-enforced boundary, zero token cost, no model involved. User rejected it — doesn't match how he wants to work, and it needs `socat` installed.
+
+**LOCKED — three layers, all in `global/settings.json`:**
+
+- **`permissions.allow` = bare tool names.** `Bash`, `Edit`, `WebFetch`, `mcp__context7__*`. A tool name with no parentheses matches *every* use of that tool, so there is no list to curate and nothing to go stale when a path moves. This is what kills the problem rather than managing it.
+- **`permissions.deny` = the 32 entries, unchanged.** Rules evaluate **deny → ask → allow**, first match wins, and a broad deny cannot be punctured by a narrower allow. Deny rules also hold in *every* permission mode, including `auto` and `bypassPermissions`.
+- **`hooks.PreToolUse` → `global/scripts/guard.py`**, matcher `Bash`, run as `python3 "$HOME/.claude/scripts/guard.py"`. Python because `/usr/bin/python3` is a fixed path; `node` lives under nvm and a hook does not reliably inherit that PATH.
+
+**The blanket allow and the guard are one unit and never ship apart** (user, emphatic, twice). Blanket allow without the guard leaves only the deny list, which can enumerate git mutations but not the open set of dangerous shell. The guard is not a safety net on top of the permission model — it *is* the part of the model that the deny list cannot express.
+
+**`guard.py`'s scope rule, recorded in its own docstring:** it installs to `~/.claude/` and therefore runs in every directory, so it may only carry rules that are true everywhere. A rule belonging to one repo goes in that repo's `.claude/settings.json`. The first draft broke this by denying `pnpm add` — importing the **workbench-only** install ban into a global guard, while `global/CLAUDE.md` *mandates* running the package manager ("run the package manager, never hand-edit the manifest"). Note `session-new-plugin.md` session 13 is stale on this: it records the ban as applying to both files, and the product side was reversed afterwards.
+
+Its verdicts:
+
+- **deny** — `sudo`/`su`, pipe-to-shell (`curl … | bash`), git mutations (a second net independent of the deny list), `--dangerously-skip-permissions`
+- **ask** — dependency changes (`npm`/`pnpm`/`yarn`/`bun`/`pip`/`uv`/`cargo`/`go`/`gem`), system packages, `chmod 777`, `dd of=/dev/`, `mkfs`, shell-rc writes, recursive deletes resolving outside the working directory
+- **never `allow`** — so `permissions.deny` stays the final authority and a bug in the script cannot widen anything
+
+**Nothing is installed into `~/.claude/` until the repo is finalized** (user, emphatic). The two narrow allow entries the user added to his own settings by hand — `tree.sh` and `merge-files.js` — are a personal interim fix, not Flow's config, and are deliberately *not* mirrored into the template.
+
+**`settings.json` is strict JSON — no comments.** Documentation therefore lives beside it in `global/settings.md`, which groups the deny list and explains every key.
 
 ---
 
