@@ -21,10 +21,11 @@ Read **`new-workflow/session-new-plugin.md`** — the master resume file: design
 
 - **Never run git mutations** (the deny list blocks them). Suggest the exact command; the user runs it. Applies to every repo here.
 - **Propose a plan and wait for explicit approval before any file change.**
-- **Never delete source after copying** without a separate explicit confirmation — even inside an approved plan. Moves into `reference/` are fine; deletes are not.
+- **Deleting the user's material needs its own explicit confirmation** — even inside an approved plan. Moves into `reference/` are fine; deletes are not.
+- **Exception: something this session just superseded is deleted on the spot.** Converted, replaced, rewritten under a new name — the dead copy goes immediately, no asking. Leaving it beside its replacement is clutter, not caution.
 - **This meta-work uses plain conversational brainstorming** — do NOT invoke `superpowers:brainstorming` or the v2 `brainstorming` skill for designing the workflow itself.
 - **`reference/` is read-only.** Never treat it as live source.
-- **Never run install or setup commands** — `pnpm add`/`remove`, extensions, global CLIs, MCP servers, system packages. No exceptions; name the command, the user runs it.
+- **Setup commands are the correct move, not a forbidden one.** Run `pnpm add`, the `create-*` CLI, the official installer, the symlink. What is banned is the *substitute* for them: hand-editing `package.json`, hand-building a scaffold a generator would produce, or writing a version string from memory. **There is no "never run install commands" rule here — do not reinvent one.**
 - **Keep internal reasoning out of deliverables.** Rejected-alternatives / "deliberately skipped" catalogs belong in design or notes, never in a polished artifact.
 - **Scratch files stay in-repo** (`tmp/`) or the session scratchpad — never root `/tmp`.
 - **No auto-memory.** Anything worth keeping goes in the repo (this file, the session doc, or a skill), not the memory feature.

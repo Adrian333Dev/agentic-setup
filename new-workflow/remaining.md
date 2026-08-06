@@ -37,11 +37,33 @@ registered commands, callable by name from any directory, by both the agent and 
 git-in-one-shot command) are *not* Flow-specific and should not be namespaced under Flow. Ticket and topic
 commands are Flow-specific and only mean anything inside a Flow project.
 
-- [ ] ❓ The PATH mechanism — one directory (`~/.local/bin` or `~/.claude/bin`) added once by
-      `setup-flow-globals`, with every command symlinked in. Aliases are rejected: bash does not expand
-      them in non-interactive shells, so the agent could not call them
-- [x] **Names settled 2026-08-06: `ptree` and `merge`.** `tree` collided with GNU `tree`; `ptree` =
-      "project tree". `map` was the rejected alternative — too generic a word to claim globally
+- [x] **PATH mechanism settled and installed 2026-08-07: `~/.local/bin`.** Already on this machine's PATH
+      and already existed, so nothing had to be configured. Each command is a **symlink** into it pointing
+      at the file in this repo — nothing is copied, so editing the repo changes the command instantly.
+      `~/.claude/scripts/` stays a separate concern: it is a folder symlink for the two things that are
+      *not* PATH commands (`guard.js`, referenced by `settings.json`'s hook, and `link-skills.sh`).
+      Aliases stay rejected: bash does not expand them in non-interactive shells, so the agent could not
+      call them. **`setup-flow-globals` (build step 3) must create all four `~/.local/bin` links plus the
+      `~/.claude/scripts` folder link** — they exist on this machine already, but a new machine has none.
+      Written into `flow/README.md`'s manual setup block in the meantime
+- [x] **Final names, 2026-08-07** — typed as `ptree`, `fmerge`, `gsave`, `flow`. Bare `merge` and `save`
+      collide with what those words already mean around git, so the one-letter prefix says which noun the
+      command operates on — **f**ile merge, **g**it save
+- [x] **Extensions stay on every file; the symlink drops them** (user, 2026-08-07, reversing the same
+      morning's call to strip them). `ptree.sh`, `fmerge.js`, `gsave.sh`, `guard.js`, `link-skills.sh`,
+      `flow/flow.js` on disk; `~/.local/bin/ptree` → `…/ptree.sh` and so on. The stripped version failed on
+      its own terms: it was meant to be consistent and wasn't — `flow.js` kept an extension because it sits
+      in a package folder — and an extensionless file shows no type in an editor. The symlink layer already
+      exists, so it costs nothing to let it carry the bare name. **Rule:** nothing in `global/scripts/` is
+      ever extensionless
+- [x] **Two languages, settled 2026-08-07 (user).** Three was one too many. `guard.py` → `guard.js`, a
+      straight port verified against the Python original on 18 command probes — identical verdicts on all
+      of them. The `settings.md` objection (`/usr/bin/python3` is a fixed path, nvm's node may not be on a
+      hook's `PATH`) is void: `flow` and `fmerge` are Node, so node-on-PATH is already a hard dependency of
+      the toolchain and the guard adds no new one. Verified from `/proc/<claude-pid>/environ` that the PATH
+      Claude Code passes to hooks does contain the nvm bin dir. **The split that remains:** bash where the
+      script is a thin wrapper over another command (`ptree` over `tree`, `gsave` over `git`), Node where
+      there is real logic (`fmerge`, `flow`, `guard.js`)
 - [x] **Language: JavaScript** (node), settled 2026-08-06. The user leaned that way and the work agrees —
       every command is *parse YAML frontmatter across N files → filter → write it back*, plus a dependency
       graph for `next` (transitive dep checks) and `check` (cycle detection). That is bash's worst domain:
@@ -53,35 +75,67 @@ commands are Flow-specific and only mean anything inside a Flow project.
       The real cost is concrete rather than ideological: a dependency means a `package.json` and an install
       step, `setup-flow-globals` grows that step, and the never-run-install hard rule means **the user** has
       to run it before his commands work
-- [ ] **Frontmatter: hand-parse it.** Unaffected by the above — seven controlled fields (`id`, `title`,
-      `status`, `type`, `topic`, `deps`, `by`) is roughly 50 lines, well under the bar
-- [ ] Rewrite every `~/.claude/scripts/…` path reference in `global/CLAUDE.md` and in the skills once the
-      commands have names
+- [x] **Frontmatter: hand-parse it.** Unaffected by the above — seven controlled fields (`id`, `title`,
+      `status`, `type`, `topic`, `deps`, `by`) is roughly 50 lines, well under the bar.
+      **Built** as `lib/frontmatter.js`, zero dependencies. Writes inline arrays (`deps: [t045, t046]`);
+      *reads* block sequences too, because a hand-edited file is a real case. Empty fields are dropped on
+      write rather than left as `topic:` with nothing after it
+- [x] **Reference sweep done 2026-08-07, twice** (once per rename round). `global/CLAUDE.md` `## Scripts`
+      rewritten for bare commands and given a `flow` entry plus a never-run-it line for `gsave`;
+      `flow/CLAUDE.md` layout table plus three rules (bare paths, the extension convention, the two-language
+      split); `flow/README.md` — setup block now creates the four `~/.local/bin` links, and the script list
+      is split into PATH commands and path-referenced files; `global/settings.md` and `settings.json` (hook
+      command is now `node …/guard.js`); `execute/SKILL.md`; every script's own usage text and `--help`.
+      CHANGELOG entries left alone — they record what was true at the time
+- [x] **`guard.py` deleted 2026-08-07**, the moment `guard.js` replaced it. The deletes rule now carves
+      out superseded files explicitly, in both this workbench's `CLAUDE.md` and `global/CLAUDE.md` — asking
+      about a file the same session just replaced is friction, not safety
+- [x] **`~/.claude/scripts` folder symlink created 2026-08-07**, so `guard.js` and `link-skills.sh` are
+      reachable at the path `settings.json` and the docs name. The hook itself is still not installed:
+      `~/.claude/settings.json` has no `hooks` key yet — that is `setup-flow-globals`' job
+- [x] **`flow ticket new --body -` — built 2026-08-07.** Reads the whole file body from stdin and uses it
+      instead of the template, so creating and filling a ticket is one command rather than create-then-edit.
+      `--body "text"` also works for a one-liner. Written into `global/CLAUDE.md` as the expected form
+- [x] **`flow start` refuses on an unsatisfied dep — built 2026-08-07.** Reverses the original warn-and-
+      proceed design, on the user's suggestion. The argument that decided it: an agent reads past a warning
+      line, but cannot ignore a non-zero exit code. The check runs *before* the write, so a refused start
+      changes nothing on disk. `--force` overrides and still prints what was overridden
 - [ ] Behaviour when a command is missing — files stay plain markdown + YAML and grep still works, so say
       what a skill does rather than letting it improvise
 
 **Project-root discovery — required (user, 2026-08-06).** Commands take no path. Run from anywhere inside a
 project, they locate it from the current directory.
 
-- [ ] **Resolve the root with `git rev-parse --show-toplevel`**, not a hand-rolled walk up the tree. One
+- [x] **Resolve the root with `git rev-parse --show-toplevel`**, not a hand-rolled walk up the tree. One
       subprocess, and it already handles the cases a walk gets wrong — worktrees (where `.git` is a *file*),
       submodules, and symlinked paths. Nested repos resolve to the nearest enclosing repo, which is the
-      correct answer in this workbench (running inside `flow/` must mean `flow/`, not `agentic-setup/`)
-- [ ] `.git` is the marker, **not** `docs/tickets/` — that folder does not exist before the first ticket, so
+      correct answer in this workbench (running inside `flow/` must mean `flow/`, not `agentic-setup/`).
+      **Built** as `lib/root.js`; nested-repo behaviour verified against this workbench — `flow/` and
+      `reference/superpowers/` each resolve to themselves
+- [x] `.git` is the marker, **not** `docs/tickets/` — that folder does not exist before the first ticket, so
       `flow ticket new` in a fresh project would have nothing to find
-- [ ] Not in a git repo → one clear error. Brainstorming works with no repo, but tickets do not exist until
-      a project does
-- [ ] ❓ `FLOW_PROJECT` env override, for an agent dispatched with a different working directory
-- [ ] **Future: one git command** for add + commit + push with flexible arguments. Likely a **git alias**
-      (`git save`) rather than a PATH script — idiomatic, zero PATH entries, takes args via `!f(){…};f`.
-      **User-run only; the agent never calls it** (user, 2026-08-06). Not part of the Flow command set —
-      it is a personal tool that happens to live in the same place
-- [ ] ❓ Optional, user's call: add the git command's name to `guard.py`'s deny list anyway. The user's
+- [x] Not in a git repo → one clear error naming the `FLOW_PROJECT` escape hatch. Brainstorming works with
+      no repo, but tickets do not exist until a project does
+- [x] **`FLOW_PROJECT` env override — built.** Wins over git discovery; errors if the path does not exist.
+      For an agent dispatched with a different working directory, and the only way to drive a non-git
+      scratch project (which is how the smoke test runs)
+- [x] **`gsave` — built 2026-08-07.** add + commit + push in one command. A PATH script, not the git alias
+      the 08-06 note guessed at.
+      `gsave` · `gsave "message"` · `-p src,docs` to stage a subset (comma-separated) · `-n` to skip the
+      push · `--dry-run`. With no message it generates one from the staged paths rather than writing
+      "save" — that is the every-commit-says-save problem. With nothing to commit it still pushes, so
+      `gsave` also means "catch the remote up"; with no upstream it sets one.
+      **User-run only; the agent never calls it** — written as such in `global/CLAUDE.md`
+- [x] **Scope of `gsave` fixed by the user, 2026-08-07: it shortens three commands, it does not wrap git.**
+      `--amend` and the `--force-with-lease` push that came with it were cut. The test for anything
+      proposed here is not "is this useful" but "does this belong to add-commit-push". Everything else —
+      amend, revert, rebase, force — is typed as a plain git command
+- [ ] ❓ Optional, user's call: add the git command's name to `guard.js`'s deny list anyway. The user's
       position is that it is his command, so the guard is unrelated. Noted counterpoint — the guard does not
       gate *who* runs a command, it gates what the **agent's Bash tool** executes, and the agent can type any
       string. Cost of closing it is one deny-list line; risk of leaving it open is low in practice
 
-### 2a2 — Commands: the ticket/topic surface ⛔ ❓ **not approved**
+### 2a2 — Commands: the ticket/topic surface — **BUILT 2026-08-06**
 
 **Correction on the record (2026-08-06):** the 08-05 command list was never really approved — the user
 waved it through to keep moving and considers it "very terribly designed and very confusing." Treat
@@ -146,16 +200,38 @@ defaults to tickets**, with `flow topic ls` for topics — an asymmetry paid so 
       `templates/topic.md`, read at runtime. **Not embedded strings in the JS:** a template is content the
       user will want to edit (add a section to every new ticket), and editing a string literal to do that is
       hostile
-- [ ] Proposed layout, since JS + templates means a folder rather than a loose file:
+- [x] **Built 2026-08-06**, every command in the surface above, ~950 lines, zero dependencies:
       ```
       flow/global/scripts/flow/
-        flow.js          entry point + dispatch  (#!/usr/bin/env node, +x)
-        lib/             frontmatter, root resolution, the ticket/topic model
-        templates/       ticket.md, topic.md
+        flow.js               entry + dispatch + all command bodies   (+x, #!/usr/bin/env node)
+        lib/root.js           git rev-parse --show-toplevel, FLOW_PROJECT override
+        lib/frontmatter.js    parse / serialize the controlled YAML subset
+        lib/store.js          ids, slugs, the folder layout, templates, lookup by id or slug
+        lib/graph.js          ready set, unmet deps, dependents, cycles, integrity check
+        lib/render.js         tables and reports — plain text, no ANSI
+        lib/error.js          FlowError → a message, not a stack trace
+        templates/ticket.md   body only; frontmatter is generated
+        templates/topic.md
       ```
-      Knock-on: `flow/CLAUDE.md`'s layout table lists `global/scripts/` as four loose files
-- [ ] Sweep the command names into every doc that references them — **after** the surface is confirmed, once,
-      not twice. Same paragraphs also carry the now-overturned flat-file pool wording
+      Knock-on, still open: `flow/CLAUDE.md`'s layout table lists `global/scripts/` as four loose files
+- [ ] Sweep the command names into every doc that references them — once, not twice. Same paragraphs also
+      carry the now-overturned flat-file pool wording
+
+**Judgment calls made during the build**, each defensible but none of them previously stated:
+
+- **`start` warns on unmet deps, it does not refuse.** `flow next` is the gate; a verb that argues with you
+  is a verb you route around
+- **`supersede` re-points its dependents automatically** and prints every rewrite. Re-pointing is the entire
+  reason `superseded` exists as a status distinct from `dropped`; leaving the pool inconsistent and printing
+  a to-do list would be worse
+- **`ticket edit --title` never renames the folder.** The folder name is the ticket's identity — job briefs
+  and handoffs sit inside it and links point at it. Frontmatter changes, path does not
+- **`dep --on` refuses to close a cycle** at the moment of the edit, rather than letting `check` find it later
+- **Templates hold the body only.** Frontmatter is generated, which is the enforceable form of "frontmatter is
+  owned by the commands" — there is no placeholder to hand-edit
+- **No `## Plan` heading in the ticket template.** The plan is written at pickup; an empty heading invites
+  filling it early, which is the thing the design rejects
+- **Ids are three digits** (`t001`), and `t47` / `47` / `T047` all resolve to the same ticket on input
 
 **Mandatory use — confirmed by the user 2026-08-06, with the boundary stated.** Creating a ticket or a
 topic, and changing status or any other frontmatter field, **must** go through a command. Everything else —
@@ -167,15 +243,27 @@ writing the body, the `## Plan`, adding files alongside — is free-hand. The li
       invariant dies quietly: create, status, deps, topic, supersede-with-`by`, retitle
 - [ ] Write the rule into the skills that mutate tickets, and into `global/CLAUDE.md`
 
-### 2b — Scripts: build
+### 2b — Scripts: build — **DONE 2026-08-06**
 
-- [ ] `flow ticket new "<title>" --topic <slug> [--deps t045]` — next id, writes from template
-- [ ] `flow ticket set <id> status=… | deps=…` — edits frontmatter, validates references
-- [ ] `flow tickets [--status] [--topic] [--ready] [--tree]` — `--ready` = `todo` + every dep `done`
-- [ ] Integrity reporting inside `tickets`: dependency cycles, dangling ids, `dropped` blockers (a `dropped`
-      dep must raise an error on its dependents — that is the only reason `dropped` and `superseded` both exist)
-- [ ] `flow status` — active topic, in-progress, review pile, ready set
-- [ ] No delete command. `status: dropped` is the archive
+Superseded as a checklist by 2a2, whose surface is what actually got built. Kept for the invariants:
+
+- [x] Next id, folder created from template, dep references validated at creation
+- [x] Integrity reporting as its own command (`flow check`): dependency cycles, dangling ids, `dropped`
+      blockers, `superseded` deps needing a re-point. Exits 1 when anything is found. Only **live** tickets
+      are reported — a `done` ticket that once depended on a dropped one is history, not a problem
+- [x] `flow status` — counts by status, active topics, in flight, in review, ready vs blocked
+- [x] No delete command. `status: dropped` is the archive
+- [x] **`review` satisfies a dependent's `deps`**, same as `done` — verified: moving a ticket to `review`
+      prints the tickets that just became ready
+
+**Verified by smoke test** against a scratch project (`tmp/flow-smoke/`, driven by `FLOW_PROJECT`): seven
+tickets and two topics created; one walked `todo → in-progress → review → done`; `next` respecting deps and
+naming the blocker when nothing is ready; a dropped blocker reported on drop *and* by `check`; a supersede
+re-pointing its dependent; a hand-written cycle plus a dangling id both caught; block-sequence frontmatter
+and short ids (`t5`) parsed and normalized on the next write.
+
+- [ ] **No test suite.** The smoke test was a shell session, not a file. Worth a small runner before the
+      commands get load-bearing — the graph functions are the part that will silently rot
 
 ### 2c — 🔁 `brainstorm/SKILL.md`
 
@@ -238,8 +326,9 @@ The agent's earlier objection — that a ticket with an "inside" recreates delap
 gravity well already has a designated exit: work that deserves decomposition becomes a **topic**, which is
 the concept that exists for exactly that.
 
-- [ ] Inner filename is a constant (`ticket.md`), not the slug repeated — tooling always knows the path
-- [ ] `flow` commands create and move the folder; the shape is never assembled by hand
+- [x] Inner filename is a constant (`ticket.md`), not the slug repeated — tooling always knows the path
+- [x] `flow` commands create the folder; the shape is never assembled by hand. Nothing ever *moves* it —
+      not on status change, not on retitle
 - [ ] Sweep every doc that says the pool is flat files — `design-brainstorm-rework.md` `## SESSION 2026-08-05`
       is the main one
 
@@ -251,12 +340,18 @@ entries, overwhelmingly terminal.
 - [ ] **Filtering must never require reading the pool.** `flow ls --status …` parses frontmatter across
       every ticket; that is fine for a script and impossible for an agent doing it by hand. This is the
       strongest argument yet that the commands are mandatory rather than convenience
-- [ ] ❓ **Archive terminal tickets, or leave them?** `done` / `dropped` / `superseded` are absorbing states,
-      so moving them to `docs/tickets/archive/` is a one-way move at end of life — a much weaker version of
-      the location-duplicates-status objection than moving on `in-progress`. Real benefit: every glob and
-      directory listing stops carrying hundreds of dead entries, and context is the scarce resource.
-      **Recommendation: not yet.** Partitioning before it hurts is the failure this design keeps hitting;
-      revisit with a real count
+- [x] **Archive terminal tickets — BUILT 2026-08-07.** `done` / `dropped` / `superseded` move to
+      `docs/tickets/archive/<id>-<slug>/`; the live pool keeps only `todo` / `in-progress` / `review`.
+      Automatic on the status write, and it moves **back** if a done ticket is reopened. Two buckets, never
+      one folder per status — that would make location duplicate `status`, which is what killed
+      promote-on-`in-progress`.
+      **The reason is readability, not performance.** The agent measured 2000 tickets at 62 ms to parse and
+      wrongly argued from that; the user's actual case is scrolling `docs/tickets/` in an editor file tree,
+      where hundreds of dead folders bury the eight live ones and no command can help.
+      **The one rule that makes it safe: reference a ticket by id, never by path.** The user's point —
+      lookup goes through `flow show t047`, which searches both directories, so nothing breaks. Written into
+      `flow`'s own help text. Paths written into a doc by hand are the only thing that can break, and they
+      were already the wrong way to name a ticket
 
 ### 2e — 🔁 `write-plan.md` → the ticket's `## Plan` section
 
@@ -437,7 +532,7 @@ and parked at `new-workflow/rejected-init-flow/` — the input to the rewrite, n
 - [ ] **Link the skills globally** once the set is final:
       `bash /home/me/code/projects/agentic-setup/flow/global/scripts/link-skills.sh`. Not before — nothing
       loads until then, and that is deliberate
-- [ ] **Tune `guard.py`'s deny/ask lists** against real use. Written from the hard rules, never against
+- [ ] **Tune `guard.js`'s deny/ask lists** against real use. Written from the hard rules, never against
       observed false positives; a `deny` verdict cannot be overridden in-session
 - [ ] **Empty the ~50-entry `allow` array** in `agentic-setup/.claude/settings.local.json` — dead exact-string
       rules for paths the #H1 restructure moved. **Awaiting explicit yes; it is a delete**
