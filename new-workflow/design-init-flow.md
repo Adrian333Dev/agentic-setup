@@ -35,9 +35,11 @@ Kills `design-brainstorm-rework.md` #D (overlap with project-init) and genesis #
 
 It existed only because `project-init` was a separate skill needing its own working memory. Genesis #3.4 says outright that it "IS the project-altitude `brainstorm.md`" — one artifact under two names, which is why the user couldn't say what it was for.
 
-Product-mode brainstorm writes `brainstorm.md` at project altitude (`docs/work/brainstorm.md`, not under `topics/` — it isn't a topic). Its "you are here" status header is separately dead: `handoff` owns resume state since `now.md` was killed, and the brainstorm rework already lists "delete the resume pointer" as a fix.
+Product-mode brainstorm writes at project altitude, not under `topics/` — it isn't a topic. Its "you are here" status header is separately dead: `handoff` owns resume state since `now.md` was killed, and the brainstorm rework already lists "delete the resume pointer" as a fix.
 
-The user's second concern — one file will not hold a product brainstorm — is real and survives; see Parked (wayfinder index-vs-store) and `design-brainstorm-rework.md` #A.
+**SUPERSEDED 2026-08-06 on the path only** — it is `docs/brainstorm/` (a folder: `tree.md` always whole, plus a detail file per branch that actually grew), **not** `docs/work/brainstorm.md`. See `design-brainstorm-rework.md` `## SESSION 2026-08-06`.
+
+The user's second concern — one file will not hold a product brainstorm — was correct and is now resolved by that folder split.
 
 ### #2 — Name: `init-flow`
 

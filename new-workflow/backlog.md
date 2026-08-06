@@ -6,6 +6,7 @@ Flat list of loose items raised in session and not yet handled. Not ordered, not
 
 ## Skills to build
 
+- **`prototype` — brainstorm it before building it (raised 2026-08-06).** Un-parked. It was parked on 2026-07-30 as "the real need is feasibility spikes," but the product-mode design now depends on it for three different things: technical feasibility spikes (`protos/tts-lab/`), UI mockups, and proof-of-concept builds. What the skill actually *is* has never been decided — that brainstorm comes first, the build second.
 - **Our own `code-review` skill.** Named as a future build, never designed.
 - **A router skill in the shape of `ask-matt`.** Its value is the *narrative* — main flow, on-ramps, standalone, vocabulary layer, crossing sessions — not the skill list. Flow has nothing that says how its skills relate. Build it for the author first; newcomers benefit as a side effect. Ships with the maintenance rule: whenever a user-reachable skill is added, renamed, removed, or changes how it fits, the router is re-read and updated. A router that lies is worse than none.
 - **A `testing` skill — undecided, leaning no.** Raised because `docs/agents/testing.md` exists in both reference projects. User's own read: sketchy, and if built it would have to be very minimal and generic. Recommendation on the table: don't. Stack-specific testing knowledge belongs in a catalog skill for that stack; project-specific testing conventions (verification order, what E2E covers here) belong in `docs/context/`, where `execute` reads them.
@@ -20,6 +21,16 @@ Flat list of loose items raised in session and not yet handled. Not ordered, not
 
 - **`PreCompact` hook** — block-once state file, so auto-compaction gives way to `handoff`.
 - **Context-pulse hook** — inject remaining-context info so the agent knows when its context is large and can trigger `handoff` itself. The user believes the agent can often judge this unaided (after a brainstorm closes, after a spec or plan is written, after execution finishes), but the hook makes it reliable.
+
+## Scripts
+
+- **The ticket/topic scripts are named everywhere and designed nowhere (raised 2026-08-06).** `## SESSION 2026-08-05` locked "commands, not an index file" — `flow tickets --ready`, `flow ticket new`, a status command — and then never specified them. Needed: what each one does, where the script lives, how it is invoked, and **global registration** so both the agent and the user can call it from any project without a path. Also unresolved from 08-05: whether `flow ticket new` being mandatory for id assignment is enforceable at all. This blocks the ticket system being usable, not just tidy.
+
+## Flow-notes plumbing (locked 2026-08-06, not yet built)
+
+- **Add the `~/.claude/flow-notes.md` row to `## Capture`** in `flow/global/CLAUDE.md`. Routing test: *is this note about the thing I'm building, or about Flow itself?* Flow → `~/.claude/flow-notes.md`; every existing row unchanged. Entries stamped date + project.
+- **`setup-flow-globals` must never overwrite `~/.claude/flow-notes.md`.** It is the one file in `~/.claude/` that belongs to the user, not the template. A re-run destroying it is silent and unrecoverable. Write the exclusion into the skill when it is built (build step 3).
+- Design rationale in `design-brainstorm-rework.md` → `## SESSION 2026-08-06` → *Notes about Flow itself*.
 
 ## Docs / structure
 
