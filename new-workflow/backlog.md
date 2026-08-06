@@ -1,5 +1,9 @@
 # Workbench backlog
 
+> **SUPERSEDED 2026-08-06 by `new-workflow/remaining.md`**, which is the single master checklist for
+> everything left to build — every item below is represented there, with build order and design pointers.
+> This file is now a second copy and should be deleted; awaiting the user's yes, since it is a delete.
+
 Flat list of loose items raised in session and not yet handled. Not ordered, not a commitment. Drain into design docs or into `flow/` as they get picked up.
 
 ---

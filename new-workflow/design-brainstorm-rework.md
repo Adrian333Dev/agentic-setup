@@ -209,6 +209,16 @@ and nothing else. See `## SESSION 2026-08-06`.
 
 **Tickets — the work. ONE FLAT GLOBAL POOL for the whole project.**
 
+> **SUPERSEDED 2026-08-06 (second session) on the FILE question only — a ticket is now a FOLDER.**
+> `docs/tickets/t047-daemon-detection/` holding `ticket.md` (constant name, like `SKILL.md`), `handoff.md`
+> (the resume), and one `<slug>.md` per dispatched job brief. Uniform **from birth** — never promoted,
+> never a mixed directory, path never changes. Everything else in this section stands: one pool, global,
+> flat at the pool level, no hierarchy in the path or the name. Reason for the change: a job brief for a
+> separately-dispatched agent (debugging, a parallel investigation) needs a real sibling file, and the
+> agent's counter-argument — that an "inside" recreates delapse's `m08e` nesting — does not survive it,
+> because decomposition already has a designated exit in the **topic** concept. See
+> `new-workflow/remaining.md` → `## 2d2`.
+
 ```
 docs/tickets/t047-daemon-detection.md
 ```
@@ -275,6 +285,15 @@ Full trace, no skipped steps: brainstorm closes → commit → coarse tickets ex
 ### Commands, not an index file
 
 No `INDEX.md`. A generated file that gets committed is a cache that can be stale — the same failure as `roadmap.md`, automated. Commands compute from the files every time.
+
+> **THE COMMAND LIST BELOW IS A REJECTED FIRST DRAFT — SUPERSEDED 2026-08-06 (second session).** The user
+> never really approved it ("very terribly designed and very confusing"); he waved it through to keep the
+> session moving. Five faults: `ticket` vs `tickets` as different commands; `set <id> status=done` key=value;
+> the word "status" meaning both project state and a frontmatter filter; `--ready` buried as a flag though it
+> is the query the whole no-index decision rests on; no topic commands at all. **The confirmed surface, plus
+> language (JavaScript), root discovery (`git rev-parse --show-toplevel`), templates and naming
+> (`ptree`, `merge`), is `new-workflow/remaining.md` → `## 2a` / `## 2a2`.** The principle above — commands
+> compute, never a committed index — is unchanged and is why they exist.
 
 ```
 flow ticket new "<title>" --topic <slug> [--deps t045]    assigns the next id, writes from template
@@ -343,7 +362,7 @@ Re-run the pickup judgment. Three outcomes:
 ### Rejected 2026-08-05 — do not re-propose
 
 - **Everything from Wayfinder** — the map file, fog of war, "only ticket what you can state sharply", decision tickets, the frontier query, ticket types.
-- **A ticket file that gets "promoted" into a folder** when it needs brainstorming. User: *"plain up stupid and complete shit."* Topics are a distinct concept; that is what the promotion was faking.
+- **A ticket file that gets "promoted" into a folder** when it needs brainstorming. User: *"plain up stupid and complete shit."* Topics are a distinct concept; that is what the promotion was faking. **Still rejected 2026-08-06 — and re-rejected in a second form** (promote on `todo → in-progress`, moving the ticket to another path). Promotion of any kind is dead: location would duplicate `status`, and all six statuses would then need a location rule. What replaced it is **folders from birth**, which is not a promotion — the shape never changes.
 - **Per-topic ticket folders**, and hierarchy encoded in filenames or paths (the `e1-web-app/` + `s01-*.md` + `t14-*.md` mixture the user could not parse). One flat pool, `tNNN-slug.md`, uniform.
 - **A `spec.md` surviving anywhere in the ticket system**, including disguised as a parent ticket holding Goal/Scope/Architecture/Success-criteria. The agent did exactly this and it was caught.
 - **`INDEX.md`** or any committed generated index.
